@@ -43,10 +43,11 @@ const getStyles = (
 <a
   href={disabled ? null : href}
   class={`
-    hover:opacity-90
+    w-fit
     flex
     items-center
-    cursor-pointer
+    ${disabled ? 'cursor-default' : 'cursor-pointer'}
+    ${disabled ? '' : 'hover:opacity-90'}
     ${getStyles(variant, size, disabled)}
     ${className ?? ''}
    `}
