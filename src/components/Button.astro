@@ -1,0 +1,48 @@
+---
+type ButtonSize = 'lg' | 'md';
+type ButtonVariant = 'main' | 'link';
+
+interface Props {
+  text: string;
+  href: string;
+  size: ButtonSize;
+  variant: ButtonVariant;
+  disabled?: boolean;
+  className?: boolean;
+}
+
+const {text, size, href, variant, disabled, className} = Astro.props as Props;
+
+const getStyles = (
+  variant: ButtonVariant,
+  size: ButtonSize,
+  disabled: boolean,
+) => {
+  const baseStyles = {
+    main: {
+      lg: `h-[64px] px-[24px] rounded-[8px] ${disabled ? 'bg-btn-main-disabled-bg text-btn-main-disabled-color' : 'bg-btn-main-normal-bg text-btn-main-normal-color'}`,
+      md: `h-[52px] px-[24px] rounded-[8px] ${disabled ? 'bg-btn-main-disabled-bg text-btn-main-disabled-color' : 'bg-btn-main-normal-bg text-btn-main-normal-color'}`,
+    },
+    link: {
+      lg: `px-[12px] rounded-[8px] ${disabled ? 'bg-btn-link-disabled-bg text-btn-link-disabled-color' : 'bg-btn-link-normal-bg text-btn-link-normal-color'}`,
+      md: `px-[12px] rounded-[8px] ${disabled ? 'bg-btn-link-disabled-bg text-btn-link-disabled-color' : 'bg-btn-link-normal-bg text-btn-link-normal-color'}`,
+    },
+  };
+
+  return `${baseStyles[variant][size]}`;
+};
+---
+
+<a
+  href={disabled ? null : href}
+  class={`
+    hover:opacity-90
+    flex
+    items-center
+    cursor-pointer
+    ${getStyles(variant, size, disabled)}
+    ${className ?? ''}
+   `}
+>
+  {text}
+</a>

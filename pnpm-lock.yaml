@@ -17,6 +17,9 @@ dependencies:
   '@astrojs/tailwind':
     specifier: ^5.1.0
     version: 5.1.0(astro@4.5.15)(tailwindcss@3.4.3)
+  '@astrojs/ts-plugin':
+    specifier: ^1.6.1
+    version: 1.6.1
   astro:
     specifier: ^4.5.9
     version: 4.5.15(@types/node@20.12.4)(typescript@5.4.3)
@@ -229,6 +232,17 @@ packages:
       which-pm-runs: 1.1.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@astrojs/ts-plugin@1.6.1:
+    resolution: {integrity: sha512-13mkBo5K3J/mUN/pt/4qxbwBJSmm/X2HAzOZaYg2AildnN/JxiZ2rm60LMssUXhHHhrxQoKslCh06l9sHSkCMQ==}
+    dependencies:
+      '@astrojs/compiler': 2.7.1
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@volar/language-core': 2.1.6
+      '@volar/typescript': 2.1.6
+      semver: 7.6.0
+      vscode-languageserver-textdocument: 1.0.11
     dev: false
 
   /@babel/code-frame@7.24.2:

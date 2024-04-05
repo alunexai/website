@@ -4,7 +4,7 @@ export default {
   singleQuote: true,
   trailingComma: 'all',
   bracketSpacing: false,
-  printWidth: 120,
+  printWidth: 80,
   arrowParens: 'avoid',
   overrides: [
     {
