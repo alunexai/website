@@ -10,11 +10,11 @@ const BUTTONS_CONTENT = {
   getStarted: {name: 'Get Started', href: '#'},
 };
 
-const logoSrc = (await getImgSrc('alunexLogo')).default;
+const logo = (await getImgSrc('alunexLogo')).default;
 ---
 
 <header class="w-full bg-bg-secondary flex justify-between">
-  <img src={logoSrc.src} alt="Alunex logo" />
+  <img src={logo.src} alt="Alunex logo" />
   <nav class="w-full flex items-center justify-between px-[80px]">
     <div class="flex flex-nowrap gap-x-[48px]">
       <Button
@@ -48,7 +48,6 @@ const logoSrc = (await getImgSrc('alunexLogo')).default;
         href={BUTTONS_CONTENT.getStarted.href}
         variant="main"
         size="lg"
-        disabled
       />
     </div>
   </nav>

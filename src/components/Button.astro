@@ -8,10 +8,17 @@ interface Props {
   size: ButtonSize;
   variant: ButtonVariant;
   disabled?: boolean;
-  className?: boolean;
+  className?: string;
 }
 
-const {text, size, href, variant, disabled, className} = Astro.props as Props;
+const {
+  text,
+  size = 'md' as ButtonSize,
+  href,
+  variant = 'main' as ButtonVariant,
+  disabled,
+  className,
+} = Astro.props as Props;
 
 const getStyles = (
   variant: ButtonVariant,
