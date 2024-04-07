@@ -6,3 +6,16 @@ body {
 	height: 100%;
 	background-color: theme('colors.bg-primary');
 }
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #2B313B;
+	border-radius: 8px;
+}

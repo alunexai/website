@@ -1,16 +1,50 @@
 ---
-import Discord from '@assets/Discord.astro';
-import GitHub from '@assets/GitHub.astro';
+import Button from '@components/Button.astro';
+import Facebook from '@assets/Facebook.astro';
+import YouTube from '@assets/YouTube.astro';
+import Instagram from '@assets/Instagram.astro';
+import LinkedIn from '@assets/LinkedIn.astro';
+
+const companyText = 'Alunex, LLC';
+const companySite = 'alunex.ai';
+const companyHref = '#';
+const contactBtnText = 'Contact';
+const year = '2024';
+
+const socialLinks = {
+  youtube: '#',
+  facebook: '#',
+  linkedIn: '#',
+  instagram: '#',
+};
 ---
 
-<footer class="flex flex-col">
-  <hr class="border-gray-100 dark:border-[#27293A]" />
-  <div class="my-10 flex justify-center gap-4 md:justify-end">
-    <a href="https://astro.build/chat">
-      <Discord />
-    </a>
-    <a href="https://github.com/withastro">
-      <GitHub />
-    </a>
+<footer
+  class="w-full bg-bg-secondary flex flex-col items-center justify-between px-[70px] pt-[48px] pb-[20px]"
+>
+  <div class="flex justify-between w-full">
+    <div class="flex flex-col items-start">
+      <a href={companyHref} target="_blank" class="text-text-main text-h4"
+        >{companySite}</a
+      >
+
+      <div class="flex gap-x-[16px] mt-[8px]">
+        <a href={socialLinks.facebook} target="_blank"><Facebook /></a>
+        <a href={socialLinks.linkedIn} target="_blank"><LinkedIn /></a>
+        <a href={socialLinks.youtube} target="_blank"><YouTube /></a>
+        <a href={socialLinks.instagram} target="_blank"><Instagram /></a>
+      </div>
+    </div>
+    <Button
+      text={contactBtnText}
+      variant="link"
+      size="lg"
+      class="text-h4 font-medium"
+    />
+  </div>
+
+  <div class="flex flex-col items-center mt-[24px] text-text-main">
+    <p>{companyText}</p>
+    <p>{year}</p>
   </div>
 </footer>
