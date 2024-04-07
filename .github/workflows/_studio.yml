@@ -23,8 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
-      - name: Install pnpm
-        run: npm install -g pnpm
-      - name: Install dependencies
-        run: pnpm install
+      - uses: jaid/action-npm-install@v1.2.1
+        with:
+          packageManager: pnpm
       - uses: withastro/action-studio@main
