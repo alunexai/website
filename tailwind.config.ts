@@ -33,6 +33,7 @@ const config: Config = {
       'text-main': '#FFFFFF',
       'text-dark': '#000000',
       'text-description': '#828282',
+      'input-border': '#E0E0E0',
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
