@@ -22,7 +22,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
       - uses: jaid/action-npm-install@v1.2.1
         with:
           packageManager: pnpm
