@@ -19,6 +19,7 @@
     },
     "plugins": [
       { "name": "@astrojs/ts-plugin" },
-    ]
+    ],
+    "verbatimModuleSyntax": true
   }
 }

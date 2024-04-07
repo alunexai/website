@@ -1,0 +1,67 @@
+---
+import PricingPlan from '@components/PricingPlan.astro';
+import {PRICING} from '@lib/constants';
+import type {PricingPlanModel} from '@lib/models';
+
+const title = 'Pricing';
+const subTitle = 'Free for everyone while we are in Beta!';
+
+const plans: PricingPlanModel[] = [
+  {
+    title: 'Starter',
+    price: 'Free',
+    benefits: [
+      'Up to 5 files (no images)',
+      '5MB file size max',
+      'Up to 500 queries/month',
+    ],
+    btn: {text: 'Select', disabled: false},
+  },
+  {
+    title: 'Professional',
+    price: 'Coming Soon',
+    benefits: [
+      'Up to 5000 files',
+      'Images',
+      '50MB file size max',
+      'Up to 5,000 queries/month',
+      'Basic Customer Support',
+    ],
+    btn: {text: 'Select', disabled: true},
+  },
+  {
+    title: 'Enterprise',
+    price: 'Coming Soon',
+    benefits: [
+      'Unlimited files',
+      'Images',
+      '100MB file size max',
+      'Unlimited queries',
+      'Roles & permissions',
+      'AI Agents',
+      'Content Generation',
+      'Email integration',
+      'API',
+      'Enhanced Customer Support',
+    ],
+    btn: {text: 'Select', disabled: true},
+  },
+];
+---
+
+<div
+  id={PRICING}
+  class="flex flex-col w-[80%] mx-auto items-center mt-[80px] mb-[40px]"
+>
+  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
+    {title}
+  </h1>
+
+  <p class="text-text-main text-h4 mt-[24px]">
+    {subTitle}
+  </p>
+
+  <div class="flex flex-nowrap mt-[100px] gap-x-[32px] w-full">
+    {plans.map(plan => <PricingPlan {...plan} />)}
+  </div>
+</div>

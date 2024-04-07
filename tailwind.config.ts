@@ -1,11 +1,15 @@
 import {type Config} from 'tailwindcss';
 
 const config: Config = {
-  content: ['./public/**/*.html', './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}'],
+  content: [
+    './public/**/*.html',
+    './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}',
+  ],
   theme: {
     colors: {
       'bg-primary': '#000000',
       'bg-secondary': '#2B313B',
+      'bg-price': '#FFFFFF',
       'btn-main': {
         normal: {
           bg: '#0C81ED',
@@ -27,6 +31,7 @@ const config: Config = {
         },
       },
       'text-main': '#FFFFFF',
+      'text-dark': '#000000',
       'text-description': '#828282',
     },
     fontFamily: {

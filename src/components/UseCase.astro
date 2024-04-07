@@ -1,15 +1,9 @@
 ---
 import Button from '@components/Button.astro';
+import type {UseCaseModel} from '@lib/models';
 
-interface UseCase {
-  title: string;
-  description: string;
-  btn: {text: string; disabled: boolean};
-  imgSources: string[];
-  position: 'left' | 'right';
-}
-
-const {title, btn, position, imgSources, description} = Astro.props as UseCase;
+const {btn, position, imgSources, description, title} =
+  Astro.props as UseCaseModel;
 
 const getPositionStyles = (pos: 'left' | 'right') =>
   pos === 'left' ? 'flex-row' : 'flex-row-reverse';
@@ -19,7 +13,7 @@ const getPositionStyles = (pos: 'left' | 'right') =>
   class=`flex flex-nowrap w-full items-center gap-x-[150px] mb-[200px] ${getPositionStyles(position)}`
 >
   <div class="flex flex-1 flex-col">
-    <p class="text-text-main text-h2">
+    <p class="text-text-main text-h2 font-semibold">
       {title}
     </p>
 

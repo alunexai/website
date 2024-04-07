@@ -2,14 +2,7 @@
 import {getImgSrc} from '@lib/helpers';
 import UseCase from '@components/UseCase.astro';
 import {USE_CASES} from '@lib/constants';
-
-interface UseCase {
-  title: string;
-  description: string;
-  btn: {text: string; disabled: boolean};
-  imgSources: string[];
-  position: 'left' | 'right';
-}
+import type {UseCaseModel} from '@lib/models';
 
 const title = 'Use Cases';
 const subTitle =
@@ -22,7 +15,7 @@ const imageGallery = (await getImgSrc('image-gallery')).default;
 const robot = (await getImgSrc('robot')).default;
 const desktop = (await getImgSrc('desktop')).default;
 
-const useCases: UseCase[] = [
+const useCases: UseCaseModel[] = [
   {
     title: 'Get Answers Quickly',
     description:
@@ -54,7 +47,7 @@ const useCases: UseCase[] = [
   id={USE_CASES}
   class="flex flex-col w-[80%] mx-auto items-center mt-[80px] mb-[40px]"
 >
-  <h1 class="text-text-main text-h1 px-[75px] leading-[77px]">
+  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
     {title}
   </h1>
 
