@@ -1,8 +1,8 @@
 ---
 import Button from '@components/Button.astro';
-import type {PricingPlanModel} from '@lib/models';
+import type {PricingPlanItem} from '@lib/models';
 
-const {title, price, benefits, btn} = Astro.props as PricingPlanModel;
+const {title, price, benefits, btn} = Astro.props as PricingPlanItem;
 ---
 
 <div

@@ -1,9 +1,9 @@
 ---
 import Button from '@components/Button.astro';
-import type {UseCaseModel} from '@lib/models';
+import type {UseCaseItem} from '@lib/models';
 
 const {btn, position, imgSources, description, title} =
-  Astro.props as UseCaseModel;
+  Astro.props as UseCaseItem;
 
 const getPositionStyles = (pos: 'left' | 'right') =>
   pos === 'left' ? 'flex-row' : 'flex-row-reverse';

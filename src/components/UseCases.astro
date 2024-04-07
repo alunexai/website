@@ -2,7 +2,7 @@
 import {getImgSrc} from '@lib/helpers';
 import UseCase from '@components/UseCase.astro';
 import {USE_CASES} from '@lib/constants';
-import type {UseCaseModel} from '@lib/models';
+import type {UseCaseItem} from '@lib/models';
 
 const title = 'Use Cases';
 const subTitle =
@@ -15,7 +15,7 @@ const imageGallery = (await getImgSrc('image-gallery')).default;
 const robot = (await getImgSrc('robot')).default;
 const desktop = (await getImgSrc('desktop')).default;
 
-const useCases: UseCaseModel[] = [
+const useCases: UseCaseItem[] = [
   {
     title: 'Get Answers Quickly',
     description:

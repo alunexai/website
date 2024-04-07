@@ -1,4 +1,4 @@
-export type UseCaseModel = {
+export type UseCaseItem = {
   title: string;
   description: string;
   btn: {text: string; disabled: boolean};
@@ -6,9 +6,14 @@ export type UseCaseModel = {
   position: 'left' | 'right';
 };
 
-export type PricingPlanModel = {
+export type PricingPlanItem = {
   title: string;
   price: string;
   benefits: string[];
   btn: {text: string; disabled: boolean};
+};
+
+export type FAQItem = {
+  question: string;
+  answer: string;
 };

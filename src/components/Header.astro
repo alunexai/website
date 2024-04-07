@@ -1,12 +1,12 @@
 ---
 import Button from '@components/Button.astro';
 import {getImgSrc} from '@lib/helpers';
-import {USE_CASES, PRICING} from '@lib/constants';
+import {USE_CASES, PRICING, FAQs} from '@lib/constants';
 
 const BUTTONS_CONTENT = {
   useCases: {name: 'Use Cases', href: `#${USE_CASES}`},
   pricing: {name: 'Pricing', href: `#${PRICING}`},
-  faq: {name: 'FAQs', href: '#'},
+  faq: {name: 'FAQs', href: `#${FAQs}`},
   signIn: {name: 'Sign In', href: '#'},
   getStarted: {name: 'Get Started', href: '#'},
 };

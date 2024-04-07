@@ -1,12 +1,12 @@
 ---
 import PricingPlan from '@components/PricingPlan.astro';
 import {PRICING} from '@lib/constants';
-import type {PricingPlanModel} from '@lib/models';
+import type {PricingPlanItem} from '@lib/models';
 
 const title = 'Pricing';
 const subTitle = 'Free for everyone while we are in Beta!';
 
-const plans: PricingPlanModel[] = [
+const plans: PricingPlanItem[] = [
   {
     title: 'Starter',
     price: 'Free',
