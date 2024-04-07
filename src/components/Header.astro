@@ -1,18 +1,55 @@
 ---
-import Logo from './Logo.astro';
+import Button from '@components/Button.astro';
+import {getImgSrc} from '@lib/helpers';
+import {USE_CASES, PRICING, FAQs} from '@lib/constants';
+
+const BUTTONS_CONTENT = {
+  useCases: {name: 'Use Cases', href: `#${USE_CASES}`},
+  pricing: {name: 'Pricing', href: `#${PRICING}`},
+  faq: {name: 'FAQs', href: `#${FAQs}`},
+  signIn: {name: 'Sign In', href: '#'},
+  getStarted: {name: 'Get Started', href: '#'},
+};
+
+const logo = (await getImgSrc('alunexLogo')).default;
 ---
 
-<header class="m-10 flex justify-between">
-	<a href="/"><Logo /></a>
-	<!-- Enable navigation -->
-	<!-- <nav>
-    <ul class='flex gap-6 dark:text-[#E1E2EB]'>
-      <li>
-        <a href='/about'>About us</a>
-      </li>
-      <li>
-        <a href='/careers'>Careers</a>
-      </li>
-    </ul>
-  </nav> -->
+<header class="w-full bg-bg-secondary flex justify-between">
+  <img src={logo.src} alt="Alunex logo" />
+  <nav class="w-full flex items-center justify-between px-[80px]">
+    <div class="flex flex-nowrap gap-x-[48px]">
+      <Button
+        text={BUTTONS_CONTENT.useCases.name}
+        href={BUTTONS_CONTENT.useCases.href}
+        variant="link"
+        size="lg"
+      />
+      <Button
+        text={BUTTONS_CONTENT.pricing.name}
+        href={BUTTONS_CONTENT.pricing.href}
+        variant="link"
+        size="lg"
+      />
+      <Button
+        text={BUTTONS_CONTENT.faq.name}
+        href={BUTTONS_CONTENT.faq.href}
+        variant="link"
+        size="lg"
+      />
+    </div>
+    <div class="flex flex-nowrap gap-x-[48px]">
+      <Button
+        text={BUTTONS_CONTENT.signIn.name}
+        href={BUTTONS_CONTENT.signIn.href}
+        variant="link"
+        size="lg"
+      />
+      <Button
+        text={BUTTONS_CONTENT.getStarted.name}
+        href={BUTTONS_CONTENT.getStarted.href}
+        variant="main"
+        size="lg"
+      />
+    </div>
+  </nav>
 </header>

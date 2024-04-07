@@ -1,0 +1,61 @@
+---
+import {getImgSrc} from '@lib/helpers';
+import UseCase from '@components/UseCase.astro';
+import {USE_CASES} from '@lib/constants';
+import type {UseCaseItem} from '@lib/models';
+
+const title = 'Use Cases';
+const subTitle =
+  'Unlock insights and sales productivity through Artificial Intelligence';
+
+const pdf = (await getImgSrc('pdf')).default;
+const googleDocs = (await getImgSrc('google-docs')).default;
+const sheets = (await getImgSrc('sheets')).default;
+const imageGallery = (await getImgSrc('image-gallery')).default;
+const robot = (await getImgSrc('robot')).default;
+const desktop = (await getImgSrc('desktop')).default;
+
+const useCases: UseCaseItem[] = [
+  {
+    title: 'Get Answers Quickly',
+    description:
+      'Enable conversations across your fragmented documents, spreadsheets, and photos to answer questions quickly and uncover key insights that might have otherwise been missed.',
+    btn: {text: 'Try it out!', disabled: false},
+    imgSources: [pdf.src, googleDocs.src, sheets.src, imageGallery.src],
+    position: 'left',
+  },
+  {
+    title: 'Automate Pre-sales and Customer Support',
+    description:
+      'Automate time consuming pre-sales and customer support activities with an AI Agent specially trained on relevant data that you chose and fully control.',
+    btn: {text: 'Coming soon!', disabled: true},
+    imgSources: [robot.src],
+    position: 'right',
+  },
+  {
+    title: 'Create Highly Relevant Customer Proposals',
+    description:
+      'Use photos and insights gained from your documents and files to create highly relevant AI-generated material for potential customers, in just seconds.',
+    btn: {text: 'Coming soon!', disabled: true},
+    imgSources: [desktop.src],
+    position: 'left',
+  },
+];
+---
+
+<div
+  id={USE_CASES}
+  class="flex flex-col w-[80%] mx-auto items-center mt-[80px] mb-[40px]"
+>
+  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
+    {title}
+  </h1>
+
+  <p class="text-text-main text-h4 mt-[24px]">
+    {subTitle}
+  </p>
+
+  <div class="flex flex-col mt-[130px]">
+    {useCases.map(useCase => <UseCase {...useCase} />)}
+  </div>
+</div>

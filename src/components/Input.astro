@@ -1,0 +1,22 @@
+---
+interface Props {
+  type: HTMLInputElement['type'];
+  placeholder?: boolean;
+  className?: string;
+}
+
+const {type, placeholder, className} = Astro.props as Props;
+---
+
+<input
+  type={type}
+  placeholder={placeholder}
+  class={`
+    border-[1px]
+    border-input-border
+    rounded-[8px]
+    px-[16px]
+    py-[4px]
+    ${className ?? ''}
+   `}
+/>

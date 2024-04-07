@@ -1,0 +1,51 @@
+---
+import Accordion from '@components/Accordion.astro';
+import {FAQs} from '@lib/constants';
+import type {FAQItem} from '@lib/models';
+
+const title = 'FAQs';
+
+const faqItems: FAQItem[] = [
+  {
+    question: 'What types of files can I enable for conversations?',
+    answer:
+      'Just about any type of standard format document (.doc, .xls, .pdf, Google Docs & Sheets) and image (.png and .jpg), can be enabled for conversations.',
+  },
+  {
+    question:
+      'Once I upload or share files or documents for conversations, can I later delete them?',
+    answer: 'Your answer here ...',
+  },
+  {
+    question:
+      'Can I enable certain documents for conversations with only certain people in my company?',
+    answer: 'Your answer here ...',
+  },
+  {
+    question: 'Does Alunex integrate with CRM and accounting systems?',
+    answer: 'Your answer here ...',
+  },
+  {
+    question:
+      'What is the difference between Basic and Enhanced Customer Support?',
+    answer: 'Your answer here ...',
+  },
+];
+---
+
+<div
+  id={FAQs}
+  class="flex flex-col w-[80%] mx-auto items-center mt-[80px] mb-[40px]"
+>
+  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
+    {title}
+  </h1>
+
+  <div class="flex flex-col mt-[32px] gap-y-[32px] w-full">
+    {
+      faqItems.map(item => (
+        <Accordion title={item.question} content={item.answer} />
+      ))
+    }
+  </div>
+</div>

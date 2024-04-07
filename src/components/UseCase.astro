@@ -1,0 +1,29 @@
+---
+import Button from '@components/Button.astro';
+import type {UseCaseItem} from '@lib/models';
+
+const {btn, position, imgSources, description, title} =
+  Astro.props as UseCaseItem;
+
+const getPositionStyles = (pos: 'left' | 'right') =>
+  pos === 'left' ? 'flex-row' : 'flex-row-reverse';
+---
+
+<div
+  class=`flex flex-nowrap w-full items-center gap-x-[150px] mb-[200px] ${getPositionStyles(position)}`
+>
+  <div class="flex flex-1 flex-col">
+    <p class="text-text-main text-h2 font-semibold">
+      {title}
+    </p>
+
+    <p class="text-text-description text-h4 my-[24px]">
+      {description}
+    </p>
+
+    <Button text={btn.text} disabled={btn.disabled} />
+  </div>
+  <div class="flex flex-1 flex-nowrap gap-x-[40px]">
+    {imgSources.map(src => <img src={src} />)}
+  </div>
+</div>
