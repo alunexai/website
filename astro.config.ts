@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import {defineConfig} from 'astro/config';
 
 export default defineConfig({
-  integrations: [db(), tailwind({nesting: true, configFile: './tailwind.config.ts'})],
-  output: 'server',
+  integrations: [tailwind({nesting: true, configFile: './tailwind.config.ts'})],
+  output: 'static',
   adapter: node({mode: 'standalone'}),
 });
