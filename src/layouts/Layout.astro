@@ -6,6 +6,8 @@ export interface Props {
 const {title} = Astro.props;
 import '../styles/global.css';
 ---
+// Google Tag Manager
+import GoogleTagManagerHead from '../components/GoogleTagManager.astro';
 
 <!doctype html>
 <html lang="en">
@@ -15,6 +17,7 @@ import '../styles/global.css';
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <GoogleTagManager />
   </head>
   <body>
     <slot />
