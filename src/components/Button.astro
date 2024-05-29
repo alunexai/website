@@ -1,6 +1,6 @@
 ---
-type ButtonSize = 'lg' | 'md';
-type ButtonVariant = 'main' | 'link';
+type ButtonSize = 'lg' | 'md' | 'sm';
+type ButtonVariant = 'main' | 'link' | 'icon';
 
 interface Props {
   text: string;
@@ -20,19 +20,15 @@ const {
   className,
 } = Astro.props as Props;
 
-const getStyles = (
-  variant: ButtonVariant,
-  size: ButtonSize,
-  disabled: boolean,
-) => {
+const getStyles = (variant: ButtonVariant, size: ButtonSize) => {
   const baseStyles = {
     main: {
-      lg: `h-[64px] px-[24px] text-h4 rounded-[8px] ${disabled ? 'bg-btn-main-disabled-bg text-btn-main-disabled-color' : 'bg-btn-main-normal-bg text-btn-main-normal-color'}`,
-      md: `h-[52px] px-[24px] text-h6 rounded-[8px] ${disabled ? 'bg-btn-main-disabled-bg text-btn-main-disabled-color' : 'bg-btn-main-normal-bg text-btn-main-normal-color'}`,
+      lg: `h-[48px] px-[16px] text-h6 font-bold rounded-[16px] bg-btn-main-normal-bg text-btn-main-color hover:bg-btn-main-hover-bg active:bg-btn-main-active-bg`,
+      md: `h-[40px] px-[12px] text-h6 font-bold rounded-[16px] bg-btn-main-normal-bg text-btn-main-color hover:bg-btn-main-hover-bg active:bg-btn-main-active-bg`,
+      sm: `h-[32px] px-[12px] text-h7 font-bold rounded-[16px] bg-btn-main-normal-bg text-btn-main-color hover:bg-btn-main-hover-bg active:bg-btn-main-active-bg`,
     },
     link: {
-      lg: `px-[12px] text-h3 rounded-[8px] ${disabled ? 'bg-btn-link-disabled-bg text-btn-link-disabled-color' : 'bg-btn-link-normal-bg text-btn-link-normal-color'}`,
-      md: `px-[12px] text-h6 rounded-[8px] ${disabled ? 'bg-btn-link-disabled-bg text-btn-link-disabled-color' : 'bg-btn-link-normal-bg text-btn-link-normal-color'}`,
+      md: `h-[40px] px-[16px] text-h6 font-semibold rounded-[16px] bg-btn-link-normal-bg text-btn-link-color hover:bg-btn-link-hover-bg active:bg-btn-link-active-bg`,
     },
   };
 
@@ -50,7 +46,7 @@ const getStyles = (
     font-medium
     ${disabled ? 'cursor-default' : 'cursor-pointer'}
     ${disabled ? '' : 'hover:opacity-90'}
-    ${getStyles(variant, size, disabled)}
+    ${getStyles(variant, size)}
     ${className ?? ''}
    `}
 >

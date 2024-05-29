@@ -8,29 +8,21 @@ const config: Config = {
   theme: {
     colors: {
       'bg-primary': '#000000',
-      'bg-secondary': '#2B313B',
+      'bg-secondary': '#333333',
       'bg-price': '#FFFFFF',
       'btn-main': {
-        normal: {
-          bg: '#0C81ED',
-          color: '#FFFFFF',
-        },
-        disabled: {
-          bg: '#AECCF9',
-          color: '#FFFFFF',
-        },
+        'normal-bg': '#0C81ED',
+        'hover-bg': '#3D9DF5',
+        'active-bg': '#0A6AC2',
+        color: '#FFFFFF',
       },
       'btn-link': {
-        normal: {
-          bg: 'transparent',
-          color: '#FFFFFF',
-        },
-        disabled: {
-          bg: 'transparent',
-          color: '#FFFFFF',
-        },
+        'normal-bg': 'transparent',
+        'hover-bg': '#333333',
+        'active-bg': '#4D4D4D',
+        color: '#FFFFFF',
       },
-      'text-main': '#FFFFFF',
+      'color-main': '#FFFFFF',
       'text-dark': '#000000',
       'text-description': '#828282',
       'input-border': '#E0E0E0',
@@ -40,7 +32,7 @@ const config: Config = {
       serif: ['Inter', 'serif'],
     },
     fontSize: {
-      h1: '64px',
+      h1: '56px',
       h2: '40px',
       h3: '32px',
       h4: '24px',
@@ -51,10 +43,10 @@ const config: Config = {
     },
     screens: {
       sm: '375px',
-      md: '768px',
+      md: '640px',
       lg: '1024px',
-      xl: '1280px',
-      '2xl': '1536px',
+      xl: '1440px',
+      '2xl': '1920px',
     },
   },
 };

@@ -1,25 +1,65 @@
 ---
 import {getImgSrc} from '@lib/helpers';
+import Lines from '@assets/Lines.astro';
 import Button from '@components/Button.astro';
 
-const title =
-  'Increase Sales & Productivity Through Artificial Intelligence';
+const title = 'Increase sales & productivity through artificial intelligence';
 const subTitle = 'Improved margins for SMBs are just a chat away';
-const btnText = 'Get Started';
+const btnText = 'Get started';
 
-const chat = (await getImgSrc('chat')).default;
+const background = (await getImgSrc('welcome-background')).default;
+const chat = (await getImgSrc('welcome-chat')).default;
 ---
 
-<div class="flex flex-col w-2/3 mx-auto items-center text-center mt-[100px]">
-  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
+<div
+  class="pt-[70px] flex flex-col items-center relative w-full h-[1420px] overflow-hidden"
+>
+  <div class="absolute inset-0 top-[-70px]">
+    <img
+      src={background.src}
+      alt="Background"
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <div class="relative z-10">
+    <Lines />
+  </div>
+
+  <h1
+    class="gradient-text mt-[32px] w-[1000px] text-h1 leading-[64px] text-center font-bold relative z-10"
+  >
     {title}
   </h1>
 
-  <p class="text-text-main text-h3 mt-[100px] font-bold">
+  <h4
+    class="mt-[32px] text-color-main text-h4 leading-[20px] text-center font-medium relative z-10"
+  >
     {subTitle}
-  </p>
+  </h4>
 
-  <img src={chat.src} alt="AI Chat" class="mt-[60px]" />
+  <Button
+    text={btnText}
+    variant="main"
+    size="lg"
+    className="mt-[32px] text-h6 font-medium relative z-10"
+  />
 
-  <Button text={btnText} className="mt-[40px]" />
+  <div class="absolute bottom-20">
+    <img
+      src={chat.src}
+      width="707px"
+      height="660px"
+      alt="Chat"
+      class="object-cover"
+    />
+  </div>
 </div>
+
+<style>
+  .gradient-text {
+    background: linear-gradient(100deg, #dfffe6, #7db9ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+</style>
