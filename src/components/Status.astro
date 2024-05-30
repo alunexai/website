@@ -1,9 +1,10 @@
 ---
 import type {StatusItem} from '@lib/models';
 
-const {isReady} = Astro.props as StatusItem;
+const {isReady, readyText} = Astro.props as StatusItem;
 
-const getText = (isReady: boolean) => (isReady ? 'Ready' : 'Coming soon');
+const getText = (isReady: boolean) =>
+  isReady ? readyText || 'Ready' : 'Coming soon';
 const getStyles = (isReady: boolean) =>
   isReady
     ? 'border-color-success text-color-success'

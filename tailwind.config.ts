@@ -9,6 +9,7 @@ const config: Config = {
     colors: {
       'bg-primary': '#000000',
       'bg-secondary': '#333333',
+      'bg-price': '#1A1A1A',
       'btn-main': {
         'normal-bg': '#0C81ED',
         'hover-bg': '#3D9DF5',
@@ -26,6 +27,8 @@ const config: Config = {
       'color-case-title': '#CFE6FC',
       'color-description': '#CCCCCC',
       'color-success': '#52E078',
+      'color-blue-50': '#0C81ED',
+      'color-gray-50': '#808080',
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],

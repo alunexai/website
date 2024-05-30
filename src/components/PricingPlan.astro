@@ -1,26 +1,33 @@
 ---
 import Button from '@components/Button.astro';
 import type {PricingPlanItem} from '@lib/models';
+import Status from 'src/components/Status.astro';
 
-const {title, price, benefits, btn} = Astro.props as PricingPlanItem;
+const {title, price, isReady, benefits, btn} = Astro.props as PricingPlanItem;
+
+const readyText = 'Ready to use';
 ---
 
 <div
-  class=`flex flex-col flex-1 p-[48px] bg-bg-price rounded-[12px] justify-between`
+  class=`flex flex-col flex-1 justify-between p-[32px] rounded-[16px] bg-bg-price`
 >
   <div class="flex flex-col">
-    <p class="text-text-dark text-h6 font-medium">
-      {title}
-    </p>
+    <Status isReady={isReady} readyText={readyText} />
 
-    <p class="text-text-dark text-h2 mt-[12px] font-semibold">
-      {price}
-    </p>
+    <div class="flex justify-between mt-[16px]">
+      <p class="text-color-main text-h4 leading-[32px] font-bold">
+        {title}
+      </p>
 
-    <ul class="flex flex-col list-disc pl-[20px] mt-[32px]">
+      <p class="text-color-gray-50 text-h4 leading-[32px] font-bold">
+        {price}
+      </p>
+    </div>
+
+    <ul class="flex flex-col list-disc pl-[20px] mt-[24px]">
       {
         benefits.map(benefit => (
-          <li class="text-text-description text-h5 mt-[12px] font-medium	">
+          <li class="text-color-description text-h7 leading-[20px] font-medium	">
             {benefit}
           </li>
         ))
@@ -28,9 +35,5 @@ const {title, price, benefits, btn} = Astro.props as PricingPlanItem;
     </ul>
   </div>
 
-  <Button
-    className="w-full mt-[32px]"
-    text={btn.text}
-    disabled={btn.disabled}
-  />
+  {btn && <Button className="w-full" text={btn.text} />}
 </div>

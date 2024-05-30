@@ -9,9 +9,10 @@ export type UseCaseItem = {
 
 export type PricingPlanItem = {
   title: string;
-  price: string;
+  price: string | undefined;
+  isReady: boolean;
   benefits: string[];
-  btn: {text: string; disabled: boolean};
+  btn: {text: string} | undefined;
 };
 
 export type FAQItem = {
@@ -21,4 +22,5 @@ export type FAQItem = {
 
 export type StatusItem = {
   isReady: boolean;
+  readyText?: string;
 };

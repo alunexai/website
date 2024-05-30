@@ -10,28 +10,30 @@ const plans: PricingPlanItem[] = [
   {
     title: 'Starter',
     price: 'Free',
+    isReady: true,
     benefits: [
       'Up to 5 files (no images)',
       '5MB file size max',
       'Up to 500 queries/month',
     ],
-    btn: {text: 'Select', disabled: false},
+    btn: {text: 'Select'},
   },
   {
     title: 'Professional',
-    price: 'Coming Soon',
+    price: undefined,
+    isReady: false,
     benefits: [
       'Up to 5000 files',
-      'Images',
       '50MB file size max',
       'Up to 5,000 queries/month',
-      'Basic Customer Support',
+      'Basic Support',
     ],
-    btn: {text: 'Select', disabled: true},
+    btn: undefined,
   },
   {
     title: 'Enterprise',
-    price: 'Coming Soon',
+    price: undefined,
+    isReady: false,
     benefits: [
       'Unlimited files',
       'Images',
@@ -42,26 +44,25 @@ const plans: PricingPlanItem[] = [
       'Content Generation',
       'Email integration',
       'API',
-      'Enhanced Customer Support',
+      'Enhanced Support',
     ],
-    btn: {text: 'Select', disabled: true},
+    btn: undefined,
   },
 ];
 ---
 
-<div
-  id={PRICING}
-  class="flex flex-col w-[80%] mx-auto items-center mt-[80px] mb-[40px]"
->
-  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
+<div id={PRICING} class="flex flex-col justify-center mt-[100px] items-center">
+  <h1 class="text-color-main text-h2 leading-[48px] font-bold">
     {title}
   </h1>
 
-  <p class="text-text-main text-h4 mt-[24px]">
+  <p
+    class="text-color-subtitle text-h5 mt-[24px] px-[12px] py-[2px] rounded-[16px] border-[1px] border-solid border-color-blue-50"
+  >
     {subTitle}
   </p>
 
-  <div class="flex flex-nowrap mt-[100px] gap-x-[32px] w-full">
+  <div class="flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
     {plans.map(plan => <PricingPlan {...plan} />)}
   </div>
 </div>
