@@ -12,11 +12,19 @@ const {type, placeholder, className} = Astro.props as Props;
   type={type}
   placeholder={placeholder}
   class={`
+    bg-color-gray-100
     border-[1px]
-    border-input-border
-    rounded-[8px]
+    border-color-gray-50
+    rounded-[16px]
     px-[16px]
-    py-[4px]
+    py-[14px]
+    text-color-main
+    font-medium
+    leading-[20px]
+    text-h7
+    hover:border-color-description
+    focus-visible:border-color-main
+    outline-none
     ${className ?? ''}
    `}
 />

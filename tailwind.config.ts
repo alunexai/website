@@ -29,6 +29,7 @@ const config: Config = {
       'color-success': '#52E078',
       'color-blue-50': '#0C81ED',
       'color-gray-50': '#808080',
+      'color-gray-100': '#000000',
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
