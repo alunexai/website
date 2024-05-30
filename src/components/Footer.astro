@@ -4,12 +4,9 @@ import Facebook from '@assets/Facebook.astro';
 import YouTube from '@assets/YouTube.astro';
 import Instagram from '@assets/Instagram.astro';
 import LinkedIn from '@assets/LinkedIn.astro';
+import AlunexLogoFooter from '@assets/AlunexLogoFooter.astro';
 
-const companyText = 'Alunex, LLC';
-const companySite = 'alunex.ai';
-const companyHref = '#';
-const contactBtnText = 'Contact';
-const year = '2024';
+const contactBtnText = 'Contacts';
 
 const socialLinks = {
   youtube: '#',
@@ -20,31 +17,18 @@ const socialLinks = {
 ---
 
 <footer
-  class="w-full bg-bg-secondary flex flex-col items-center justify-between px-[70px] pt-[20px] pb-[15px]"
+  class="w-full flex items-center justify-between px-[16px] py-[12px] border-t-[1px] border-bg-secondary"
 >
-  <div class="flex justify-between w-full">
-    <div class="flex flex-col items-start">
-      <a href={companyHref} target="_blank" class="text-text-main text-h4"
-        >{companySite}</a
-      >
+  <div class="flex gap-x-[16px]">
+    <a href="/"><AlunexLogoFooter /></a>
 
-      <div class="flex gap-x-[16px] mt-[8px]">
-        <a href={socialLinks.facebook} target="_blank"><Facebook /></a>
-        <a href={socialLinks.linkedIn} target="_blank"><LinkedIn /></a>
-        <a href={socialLinks.youtube} target="_blank"><YouTube /></a>
-        <a href={socialLinks.instagram} target="_blank"><Instagram /></a>
-      </div>
-    </div>
-    <Button
-      text={contactBtnText}
-      variant="link"
-      size="lg"
-      class="text-h4 font-medium"
-    />
+    <Button text={contactBtnText} variant="link" size="md" />
   </div>
 
-  <div class="flex flex-col items-center mt-[24px] text-text-main">
-    <p>{companyText}</p>
-    <p>{year}</p>
+  <div class="flex gap-x-[4px]">
+    <a href={socialLinks.facebook} target="_blank"><Facebook /></a>
+    <a href={socialLinks.linkedIn} target="_blank"><LinkedIn /></a>
+    <a href={socialLinks.youtube} target="_blank"><YouTube /></a>
+    <a href={socialLinks.instagram} target="_blank"><Instagram /></a>
   </div>
 </footer>
