@@ -1,9 +1,9 @@
 ---
 import Accordion from '@components/Accordion.astro';
-import {FAQs} from '@lib/constants';
+import {FAQ} from '@lib/constants';
 import type {FAQItem} from '@lib/models';
 
-const title = 'FAQs';
+const title = 'FAQ';
 
 const faqItems: FAQItem[] = [
   {
@@ -14,34 +14,35 @@ const faqItems: FAQItem[] = [
   {
     question:
       'Once I upload or share files or documents for conversations, can I later delete them?',
-    answer: 'Yes, you maintain full control of the documents that you share with Alunex, and you revoke sharing or delete previously shared documents at any time.',
+    answer:
+      'Yes, you maintain full control of the documents that you share with Alunex, and you revoke sharing or delete previously shared documents at any time.',
   },
   {
     question:
       'Can I enable certain documents for conversations with only certain people in my company?',
-    answer: 'Yes, fine grained document access control will be available for customers on the Enterprise plan, which will be available in Q3 2024',
+    answer:
+      'Yes, fine grained document access control will be available for customers on the Enterprise plan, which will be available in Q3 2024',
   },
   {
     question: 'Does Alunex integrate with CRM and accounting systems?',
-    answer: 'We will offer integrations to Salesforce and Quickbooks in Q3 2024.',
+    answer:
+      'We will offer integrations to Salesforce and Quickbooks in Q3 2024.',
   },
   {
     question:
       'What is the difference between Basic and Enhanced Customer Support?',
-    answer: 'Basic support is provided by our AI Support Chatbot, whereas Enhanced Support also includes support from a friendly human based in Austin, TX, our founder Bill.',
+    answer:
+      'Basic support is provided by our AI Support Chatbot, whereas Enhanced Support also includes support from a friendly human based in Austin, TX, our founder Bill.',
   },
 ];
 ---
 
-<div
-  id={FAQs}
-  class="flex flex-col w-[80%] mx-auto items-center mt-[80px] mb-[40px]"
->
-  <h1 class="text-text-main text-h1 px-[75px] leading-[77px] font-bold">
+<div id={FAQ} class="flex flex-col justify-center mt-[230px] items-center">
+  <h1 class="text-color-main text-h2 leading-[48px] font-bold">
     {title}
   </h1>
 
-  <div class="flex flex-col mt-[32px] gap-y-[32px] w-full">
+  <div class="flex flex-col mt-[32px] gap-y-[8px] w-[1000px]">
     {
       faqItems.map(item => (
         <Accordion title={item.question} content={item.answer} />

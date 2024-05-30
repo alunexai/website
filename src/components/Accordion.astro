@@ -1,4 +1,6 @@
 ---
+import Chevron from '@assets/Chevron.astro';
+
 type AccordionItem = {
   title: string;
   content: string;
@@ -10,16 +12,18 @@ const controlId = 'accordionControl';
 const contentId = 'accordionContent';
 ---
 
-<div class="accordion flex w-full flex-col">
-  <div class="flex w-full justify-between items-center">
-    <p class="text-text-main text-h4">{title}</p>
+<div
+  class="accordion flex w-full flex-col p-[16px] rounded-[16px] bg-bg-tertiary"
+>
+  <div class="flex w-full justify-between items-center py-[6px]">
+    <p class="text-color-main text-h5 leading-[25px] font-medium">{title}</p>
 
     <button
       id={controlId}
-      class="accordion-button transition-transform text-text-description text-h2 font-semibold rotate-0"
+      class="accordion-button transition-transform text-color-gray-50 rotate-0"
       aria-expanded="false"
     >
-      +
+      <Chevron />
     </button>
   </div>
 
@@ -27,7 +31,9 @@ const contentId = 'accordionContent';
     id={contentId}
     class="accordion-content overflow-hidden transition-max-height duration-700 ease-in-out max-h-0"
   >
-    <p class="text-text-description font-medium text-h5">{content}</p>
+    <p class="text-color-description font-medium text-h7 leading-[20px]">
+      {content}
+    </p>
   </div>
 </div>
 

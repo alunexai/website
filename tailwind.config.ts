@@ -9,7 +9,7 @@ const config: Config = {
     colors: {
       'bg-primary': '#000000',
       'bg-secondary': '#333333',
-      'bg-price': '#1A1A1A',
+      'bg-tertiary': '#1A1A1A',
       'btn-main': {
         'normal-bg': '#0C81ED',
         'hover-bg': '#3D9DF5',
