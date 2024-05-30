@@ -24,7 +24,8 @@
   "devDependencies": {
     "@types/node": "^20.11.17",
     "prettier": "^3.2.5",
-    "prettier-plugin-astro": "^0.13.0"
+    "prettier-plugin-astro": "^0.13.0",
+    "sharp": "^0.33.4"
   },
   "engines": {
     "node": "v20.9.0",
