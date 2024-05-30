@@ -2,8 +2,9 @@
 import Button from '@components/Button.astro';
 import Status from '@components/Status.astro';
 import type {UseCaseItem} from '@lib/models';
+import {Image} from 'astro:assets';
 
-const {title, description, isReady, btn, imgSource, position} =
+const {title, description, isReady, btn, imgSrc, position} =
   Astro.props as UseCaseItem;
 
 const getPositionStyles = (pos: 'left' | 'right') =>
@@ -27,5 +28,12 @@ const getPositionStyles = (pos: 'left' | 'right') =>
     {btn && <Button text={btn.text} className="mt-[24px]" />}
   </div>
 
-  <img class="flex-grow w-[284px]" src={imgSource} />
+  <Image
+    src={imgSrc}
+    alt="Use case"
+    width="284px"
+    class="flex-grow"
+    quality="100"
+    format="png"
+  />
 </div>

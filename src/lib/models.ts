@@ -3,7 +3,7 @@ export type UseCaseItem = {
   description: string;
   isReady: boolean;
   btn?: {text: string};
-  imgSource: string;
+  imgSrc: object;
   position: 'left' | 'right';
 };
 

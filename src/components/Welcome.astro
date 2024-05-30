@@ -1,22 +1,21 @@
 ---
-import {getImgSrc} from '@lib/helpers';
 import Lines from '@assets/Lines.astro';
 import Button from '@components/Button.astro';
+import {Image} from 'astro:assets';
+import welcomeBackground from '@assets/img/welcome-background.png';
+import welcomeChat from '@assets/img/welcome-chat.png';
 
 const title = 'Increase sales & productivity through artificial intelligence';
 const subTitle = 'Improved margins for SMBs are just a chat away';
 const btnText = 'Get started';
-
-const background = (await getImgSrc('welcome-background')).default;
-const chat = (await getImgSrc('welcome-chat')).default;
 ---
 
 <div
   class="pt-[70px] flex flex-col items-center relative w-full h-[1420px] overflow-hidden"
 >
   <div class="absolute inset-0 top-[-70px]">
-    <img
-      src={background.src}
+    <Image
+      src={welcomeBackground}
       alt="Background"
       class="w-full h-full object-cover"
     />
@@ -46,12 +45,14 @@ const chat = (await getImgSrc('welcome-chat')).default;
   />
 
   <div class="absolute bottom-20">
-    <img
-      src={chat.src}
+    <Image
+      src={welcomeChat}
+      alt="Chat"
       width="707px"
       height="660px"
-      alt="Chat"
       class="object-cover"
+      quality="100"
+      format="png"
     />
   </div>
 </div>

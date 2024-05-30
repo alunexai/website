@@ -1,16 +1,14 @@
 ---
-import {getImgSrc} from '@lib/helpers';
 import UseCase from '@components/UseCase.astro';
 import {USE_CASES} from '@lib/constants';
 import type {UseCaseItem} from '@lib/models';
+import answersCase from '@assets/img/answers-case.png';
+import presalesCase from '@assets/img/presales-case.png';
+import proposalsCase from '@assets/img/proposals-case.png';
 
 const title = 'Use Cases';
 const subTitle =
   'Turn fragmented data into powerful new insights and efficiencies';
-
-const answersCase = (await getImgSrc('answers-case')).default;
-const presalesCase = (await getImgSrc('presales-case')).default;
-const proposalsCase = (await getImgSrc('proposals-case')).default;
 
 const useCases: UseCaseItem[] = [
   {
@@ -19,7 +17,7 @@ const useCases: UseCaseItem[] = [
       'Enable conversations across your fragmented documents, spreadsheets, and photos to answer questions quickly and uncover key insights that might have otherwise been missed.',
     isReady: true,
     btn: {text: 'Try it out!'},
-    imgSource: answersCase.src,
+    imgSrc: answersCase,
     position: 'left',
   },
   {
@@ -28,7 +26,7 @@ const useCases: UseCaseItem[] = [
       'Automate time consuming pre-sales and customer support activities with an AI Agent specially trained on relevant data that you chose and fully control.',
     isReady: false,
     btn: undefined,
-    imgSource: presalesCase.src,
+    imgSrc: presalesCase,
     position: 'right',
   },
   {
@@ -37,7 +35,7 @@ const useCases: UseCaseItem[] = [
       'Use photos and insights gained from your documents and files to create highly relevant AI-generated material for potential customers, in just seconds.',
     isReady: false,
     btn: undefined,
-    imgSource: proposalsCase.src,
+    imgSrc: proposalsCase,
     position: 'left',
   },
 ];
