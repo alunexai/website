@@ -1,0 +1,17 @@
+---
+import type {StatusItem} from '@lib/models';
+
+const {isReady} = Astro.props as StatusItem;
+
+const getText = (isReady: boolean) => (isReady ? 'Ready' : 'Coming soon');
+const getStyles = (isReady: boolean) =>
+  isReady
+    ? 'border-color-success text-color-success'
+    : 'border-color-description text-color-description';
+---
+
+<div
+  class=`flex px-[12px] w-fit rounded-[16px] border-[1px] border-solid ${getStyles(isReady)}`
+>
+  {getText(isReady)}
+</div>

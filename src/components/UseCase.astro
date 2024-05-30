@@ -1,8 +1,9 @@
 ---
 import Button from '@components/Button.astro';
+import Status from '@components/Status.astro';
 import type {UseCaseItem} from '@lib/models';
 
-const {btn, position, imgSources, description, title} =
+const {title, description, isReady, btn, imgSource, position} =
   Astro.props as UseCaseItem;
 
 const getPositionStyles = (pos: 'left' | 'right') =>
@@ -10,20 +11,21 @@ const getPositionStyles = (pos: 'left' | 'right') =>
 ---
 
 <div
-  class=`flex flex-nowrap w-full items-center gap-x-[150px] mb-[200px] ${getPositionStyles(position)}`
+  class=`flex flex-nowrap w-full items-center gap-x-[135px] mb-[48px] py-[24px] ${getPositionStyles(position)}`
 >
-  <div class="flex flex-1 flex-col">
-    <p class="text-text-main text-h2 font-semibold">
+  <div class="flex flex-grow-2 flex-col">
+    <Status isReady={isReady} />
+
+    <p class="text-color-case-title text-h4 leading-[32px] font-bold mt-[16px]">
       {title}
     </p>
 
-    <p class="text-text-description text-h4 my-[24px]">
+    <p class="text-color-description text-h5 font-medium mt-[16px]">
       {description}
     </p>
 
-    <Button text={btn.text} disabled={btn.disabled} />
+    {btn && <Button text={btn.text} className="mt-[24px]" />}
   </div>
-  <div class="flex flex-1 flex-nowrap gap-x-[40px]">
-    {imgSources.map(src => <img src={src} />)}
-  </div>
+
+  <img class="flex-grow w-[284px]" src={imgSource} />
 </div>

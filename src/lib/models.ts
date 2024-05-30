@@ -1,8 +1,9 @@
 export type UseCaseItem = {
   title: string;
   description: string;
-  btn: {text: string; disabled: boolean};
-  imgSources: string[];
+  isReady: boolean;
+  btn?: {text: string};
+  imgSource: string;
   position: 'left' | 'right';
 };
 
@@ -16,4 +17,8 @@ export type PricingPlanItem = {
 export type FAQItem = {
   question: string;
   answer: string;
+};
+
+export type StatusItem = {
+  isReady: boolean;
 };

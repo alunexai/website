@@ -9,7 +9,6 @@ const config: Config = {
     colors: {
       'bg-primary': '#000000',
       'bg-secondary': '#333333',
-      'bg-price': '#FFFFFF',
       'btn-main': {
         'normal-bg': '#0C81ED',
         'hover-bg': '#3D9DF5',
@@ -23,9 +22,10 @@ const config: Config = {
         color: '#FFFFFF',
       },
       'color-main': '#FFFFFF',
-      'text-dark': '#000000',
-      'text-description': '#828282',
-      'input-border': '#E0E0E0',
+      'color-subtitle': '#6EB5F7',
+      'color-case-title': '#CFE6FC',
+      'color-description': '#CCCCCC',
+      'color-success': '#52E078',
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
@@ -33,10 +33,10 @@ const config: Config = {
     },
     fontSize: {
       h1: '56px',
-      h2: '40px',
-      h3: '32px',
-      h4: '24px',
-      h5: '20px',
+      h2: '48px',
+      h3: '40px',
+      h4: '32px',
+      h5: '18px',
       h6: '16px',
       h7: '14px',
       h8: '12px',
