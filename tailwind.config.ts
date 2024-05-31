@@ -40,6 +40,7 @@ const config: Config = {
       h2: '48px',
       h3: '40px',
       h4: '32px',
+      h24: '24px',
       h5: '18px',
       h6: '16px',
       h7: '14px',
