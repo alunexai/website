@@ -12,16 +12,20 @@ const getPositionStyles = (pos: 'left' | 'right') =>
 ---
 
 <div
-  class=`flex flex-nowrap w-full items-center gap-x-[135px] mb-[48px] py-[24px] ${getPositionStyles(position)}`
+  class=`flex flex-nowrap md:flex-col-reverse md:w-[480px] w-full items-center lg:gap-x-[135px] mb-[48px] py-[24px] ${getPositionStyles(position)}`
 >
-  <div class="flex flex-grow-2 flex-col">
+  <div class="flex flex-grow-2 flex-col md:items-center">
     <Status isReady={isReady} />
 
-    <p class="text-color-case-title text-h4 leading-[32px] font-bold mt-[16px]">
+    <p
+      class="text-color-case-title text-h4 leading-[32px] font-bold mt-[16px] md:text-center"
+    >
       {title}
     </p>
 
-    <p class="text-color-description text-h5 font-medium mt-[16px]">
+    <p
+      class="text-color-description text-h5 font-medium mt-[16px] md:text-center"
+    >
       {description}
     </p>
 
@@ -32,7 +36,7 @@ const getPositionStyles = (pos: 'left' | 'right') =>
     src={imgSrc}
     alt="Use case"
     width="284px"
-    class="flex-grow"
+    class="flex-grow md:w-[260px] md:mb-[24px]"
     quality="100"
     format="png"
   />
