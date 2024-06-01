@@ -49,20 +49,121 @@ const plans: PricingPlanItem[] = [
     btn: undefined,
   },
 ];
+
+const activeTab = plans[0].title.toLowerCase();
 ---
 
-<div id={PRICING} class="flex flex-col justify-center mt-[100px] items-center">
-  <h1 class="text-color-main text-h2 leading-[48px] font-bold">
+<div
+  id={PRICING}
+  class="flex flex-col justify-center lg:mt-[100px] items-center md:w-full"
+>
+  <h1
+    class="text-color-main md:text-h4 md:leading-[32px] lg:text-h2 lg:leading-[48px] font-bold"
+  >
     {title}
   </h1>
 
   <p
-    class="text-color-subtitle text-h5 mt-[24px] px-[12px] py-[2px] rounded-[16px] border-[1px] border-solid border-color-blue-50"
+    class="text-color-subtitle md:text-h7 md:leading-[20px] lg:text-h5 lg:leading-[25px] mt-[24px] px-[12px] py-[2px] rounded-[16px] border-[1px] border-solid border-color-blue-50"
   >
     {subTitle}
   </p>
 
-  <div class="flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
+  <div class="md:hidden flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
     {plans.map(plan => <PricingPlan {...plan} />)}
   </div>
+
+  <div class="tabs lg:hidden md:px-[16px] md:py-[24px] w-full">
+    <div class="w-full bg-bg-tertiary flex flex-nowrap rounded-[16px]">
+      {
+        plans.map(plan => (
+          <button
+            class={`tab-button ${activeTab === plan.title.toLowerCase() ? 'active' : ''}`}
+            data-tab={plan.title.toLowerCase()}
+          >
+            {plan.title}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="tab-content">
+    {
+      plans.map(plan => (
+        <div
+          class={`tab-pane ${activeTab === plan.title.toLowerCase() ? 'active' : ''}`}
+          id={plan.title.toLowerCase()}
+        >
+          <PricingPlan {...plan} />
+        </div>
+      ))
+    }
+  </div>
 </div>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+  }
+
+  .tab-button {
+    background: #1a1a1a;
+    border: none;
+    color: #cccccc;
+    height: 36px;
+    cursor: pointer;
+    border-radius: 16px;
+    width: 100%;
+  }
+
+  .tab-button.active {
+    background: #fff;
+    color: #000000;
+  }
+
+  .tab-content {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .tab-pane {
+    display: none;
+  }
+
+  .tab-pane.active {
+    display: block;
+  }
+</style>
+
+<script type="module" client:load>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.tab-button');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-tab');
+
+        tabs.forEach(t => t.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  });
+</script>
