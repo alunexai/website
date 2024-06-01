@@ -69,11 +69,13 @@ const activeTab = plans[0].title.toLowerCase();
     {subTitle}
   </p>
 
-  <div class="md:hidden flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
+  <div class="md:hidden lg:flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
     {plans.map(plan => <PricingPlan {...plan} />)}
   </div>
 
-  <div class="tabs lg:hidden md:px-[16px] md:py-[24px] w-full">
+  <div
+    class="md:flex md:justify-between lg:hidden md:px-[16px] md:py-[24px] w-full"
+  >
     <div class="w-full bg-bg-tertiary flex flex-nowrap rounded-[16px]">
       {
         plans.map(plan => (
@@ -88,7 +90,7 @@ const activeTab = plans[0].title.toLowerCase();
     </div>
   </div>
 
-  <div class="tab-content">
+  <div class="tab-content lg:hidden">
     {
       plans.map(plan => (
         <div
@@ -103,23 +105,6 @@ const activeTab = plans[0].title.toLowerCase();
 </div>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-  }
-
-  .tabs {
-    display: flex;
-    justify-content: center;
-  }
-
   .tab-button {
     background: #1a1a1a;
     border: none;
@@ -149,7 +134,7 @@ const activeTab = plans[0].title.toLowerCase();
   }
 </style>
 
-<script type="module" client:load>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.tab-button');
     const panes = document.querySelectorAll('.tab-pane');
