@@ -15,6 +15,7 @@ const BUTTONS_CONTENT = {
 ---
 
 <div
+  id="container"
   class="sticky top-0 z-[1000] w-full flex justify-center md:px-[16px] md:pt-[56px] md:pb-[8px] lg:px-[16px] lg:pt-[24px] lg:pb-[8px]"
 >
   <header
@@ -107,16 +108,19 @@ const BUTTONS_CONTENT = {
   const burgerOpenBtn = document.getElementById('burgerOpenBtn');
   const closeBtn = document.getElementById('burgerCloseBtn');
   const burgerMenu = document.getElementById('burgerMenu');
+  const container = document.getElementById('container');
 
   burgerOpenBtn.addEventListener('click', function () {
     burgerOpenBtn.classList.add('hidden');
     closeBtn.classList.remove('hidden');
     burgerMenu.classList.remove('hidden');
+    container.classList.add('mb-[-176px]');
   });
 
   closeBtn.addEventListener('click', function () {
     closeBtn.classList.add('hidden');
     burgerOpenBtn.classList.remove('hidden');
     burgerMenu.classList.add('hidden');
+    container.classList.remove('mb-[-176px]');
   });
 </script>
