@@ -47,7 +47,7 @@ const config: Config = {
       h8: '12px',
     },
     screens: {
-      sm: '375px',
+      sm: '340px',
       md: '640px',
       lg: '1024px',
       xl: '1440px',
