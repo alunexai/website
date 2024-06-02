@@ -8,8 +8,8 @@ const inputPlaceholder = 'Enter your mail here';
 const subscribeBtnText = 'Get updates';
 ---
 
-<div class="flex justify-center py-[80px]">
-  <div class="gradient-border w-[1000px] h-[400px]">
+<div class="flex justify-center md:px-[16px] md:py-[40px] lg:py-[80px]">
+  <div class="gradient-border w-full max-w-[1000px] h-[400px]">
     <div
       class="gradient-border-content h-full flex flex-col items-center justify-center"
     >
@@ -24,11 +24,7 @@ const subscribeBtnText = 'Get updates';
       </p>
 
       <div class="flex flex-col w-[400px] mt-[32px]">
-        <Input
-          type="email"
-          placeholder={inputPlaceholder}
-          className="mt-[14px] w-full"
-        />
+        <Input type="email" placeholder={inputPlaceholder} className="w-full" />
 
         <Button
           className="mt-[16px] w-full"
