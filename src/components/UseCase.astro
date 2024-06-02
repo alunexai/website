@@ -4,15 +4,15 @@ import Status from '@components/Status.astro';
 import type {UseCaseItem} from '@lib/models';
 import {Image} from 'astro:assets';
 
-const {title, description, isReady, btn, imgSrc, position} =
-  Astro.props as UseCaseItem;
+const {title, description, isReady, btn, imgSrc, position, isLast} =
+  Astro.props as UseCaseItem & {isLast: boolean};
 
 const getPositionStyles = (pos: 'left' | 'right') =>
   pos === 'left' ? 'lg:flex-row' : 'lg:flex-row-reverse';
 ---
 
 <div
-  class=`flex flex-nowrap md:flex-col-reverse md:w-[480px] lg:w-full items-center lg:gap-x-[135px] mb-[48px] py-[24px] ${getPositionStyles(position)}`
+  class=`flex flex-nowrap md:flex-col-reverse md:w-[480px] lg:w-full items-center lg:gap-x-[135px] ${isLast ? 'mb-0' : 'mb-[48px]'} py-[24px] ${getPositionStyles(position)}`
 >
   <div class="flex flex-grow-2 flex-col md:items-center lg:items-start">
     <Status isReady={isReady} />
@@ -36,7 +36,7 @@ const getPositionStyles = (pos: 'left' | 'right') =>
     src={imgSrc}
     alt="Use case"
     width="284px"
-    class="flex-grow md:w-[260px] md:mb-[24px] lg:w-[284px] lg:mb-[0px]"
+    class={`flex-grow md:w-[260px] md:mb-[24px] lg:w-[284px] lg:mb-[0px] ${isLast ? 'mb-0' : 'mb-[0px]'}`}
     quality="100"
     format="png"
   />

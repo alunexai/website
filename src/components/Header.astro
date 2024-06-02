@@ -117,10 +117,17 @@ const BUTTONS_CONTENT = {
     container.classList.add('mb-[-176px]');
   });
 
-  closeBtn.addEventListener('click', function () {
+  const handleCloseMenu = function () {
     closeBtn.classList.add('hidden');
     burgerOpenBtn.classList.remove('hidden');
     burgerMenu.classList.add('hidden');
     container.classList.remove('mb-[-176px]');
+  };
+
+  closeBtn.addEventListener('click', handleCloseMenu);
+
+  const menuButtons = burgerMenu.querySelectorAll('button, a');
+  menuButtons.forEach(button => {
+    button.addEventListener('click', handleCloseMenu);
   });
 </script>

@@ -19,6 +19,7 @@ const useCases: UseCaseItem[] = [
     btn: {text: 'Try it out!'},
     imgSrc: answersCase,
     position: 'left',
+    isLast: false,
   },
   {
     title: 'Automate Pre-sales and Customer Support',
@@ -28,6 +29,7 @@ const useCases: UseCaseItem[] = [
     btn: undefined,
     imgSrc: presalesCase,
     position: 'right',
+    isLast: false,
   },
   {
     title: 'Create Highly Relevant Customer Proposals',
@@ -37,11 +39,15 @@ const useCases: UseCaseItem[] = [
     btn: undefined,
     imgSrc: proposalsCase,
     position: 'left',
+    isLast: true,
   },
 ];
 ---
 
-<div id={USE_CASES} class="flex flex-col justify-center items-center">
+<div
+  id={USE_CASES}
+  class="flex flex-col justify-center items-center md:pt-[110px]"
+>
   <h1
     class="text-color-main md:text-h4 md:leading-[32px] lg:text-h2 lg:leading-[48px] font-bold"
   >
