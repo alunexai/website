@@ -55,32 +55,30 @@ const activeTab = plans[0].title.toLowerCase();
 
 <div
   id={PRICING}
-  class="flex flex-col justify-center lg:mt-[100px] md:pt-[110px] items-center md:w-full"
+  class="flex flex-col justify-center lg:mt-[100px] pt-[110px] items-center md:w-full"
 >
   <h1
-    class="text-color-main md:text-h4 md:leading-[32px] lg:text-h2 lg:leading-[48px] font-bold"
+    class="text-color-main sm:px-[16px] text-h4 leading-[32px] lg:text-h2 lg:leading-[48px] font-bold"
   >
     {title}
   </h1>
 
   <p
-    class="text-color-subtitle md:text-h7 md:leading-[20px] lg:text-h5 lg:leading-[25px] mt-[24px] px-[12px] py-[2px] rounded-[16px] border-[1px] border-solid border-color-blue-50"
+    class="text-color-subtitle sm:px-[16px] text-h7 leading-[20px] lg:text-h5 lg:leading-[25px] mt-[24px] px-[12px] py-[2px] rounded-[16px] border-[1px] border-solid border-color-blue-50"
   >
     {subTitle}
   </p>
 
-  <div class="md:hidden lg:flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
+  <div class="hidden lg:flex flex-nowrap mt-[64px] gap-x-[16px] w-[1000px]">
     {plans.map(plan => <PricingPlan {...plan} />)}
   </div>
 
-  <div
-    class="md:flex md:justify-between lg:hidden md:px-[16px] md:py-[24px] w-full"
-  >
+  <div class="md:flex md:justify-between lg:hidden px-[16px] py-[24px] w-full">
     <div class="w-full bg-bg-tertiary flex flex-nowrap rounded-[16px]">
       {
         plans.map(plan => (
           <button
-            class={`tab-button ${activeTab === plan.title.toLowerCase() ? 'active' : ''}`}
+            class={`text-h7 leading-[20px] tab-button ${activeTab === plan.title.toLowerCase() ? 'active' : ''}`}
             data-tab={plan.title.toLowerCase()}
           >
             {plan.title}
