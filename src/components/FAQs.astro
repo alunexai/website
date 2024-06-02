@@ -39,13 +39,17 @@ const faqItems: FAQItem[] = [
 
 <div
   id={FAQ}
-  class="flex flex-col justify-center pt-[230px] pb-[80px] items-center"
+  class="flex flex-col justify-center md:pt-[56px] md:pb-[40px] lg:pt-[230px] lg:pb-[80px] items-center"
 >
-  <h1 class="text-color-main text-h2 leading-[48px] font-bold">
+  <h1
+    class="text-color-main md:text-h4 md:leading-[32px] lg:text-h2 lg:leading-[48px] font-bold"
+  >
     {title}
   </h1>
 
-  <div class="flex flex-col mt-[32px] gap-y-[8px] w-[1000px]">
+  <div
+    class="flex flex-col md:mt-[16px] lg:mt-[32px] p-[16px] gap-y-[8px] max-w-[1000px]"
+  >
     {
       faqItems.map(item => (
         <Accordion title={item.question} content={item.answer} />
