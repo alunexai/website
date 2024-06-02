@@ -12,31 +12,38 @@ const getPositionStyles = (pos: 'left' | 'right') =>
 ---
 
 <div
-  class=`flex flex-nowrap md:flex-col-reverse md:w-[480px] lg:w-full items-center lg:gap-x-[135px] ${isLast ? 'mb-0' : 'mb-[48px]'} py-[24px] ${getPositionStyles(position)}`
+  class=`flex flex-nowrap flex-col-reverse md:w-[480px] lg:w-full items-center lg:gap-x-[135px] ${isLast ? 'mb-0' : 'mb-[48px]'} py-[24px] ${getPositionStyles(position)}`
 >
-  <div class="flex flex-grow-2 flex-col md:items-center lg:items-start">
+  <div class="flex flex-grow-2 flex-col items-center lg:items-start">
     <Status isReady={isReady} />
 
     <p
-      class="text-color-case-title text-h4 leading-[32px] font-bold mt-[16px] md:text-center lg:text-left"
+      class="text-color-case-title text-h4 leading-[32px] font-bold mt-[16px] text-center lg:text-left"
     >
       {title}
     </p>
 
     <p
-      class="text-color-description text-h5 font-medium mt-[16px] md:text-center lg:text-left"
+      class="text-color-description text-h5 font-medium mt-[16px] text-center lg:text-left"
     >
       {description}
     </p>
 
-    {btn && <Button text={btn.text} className="mt-[24px]" />}
+    {
+      btn && (
+        <Button
+          text={btn.text}
+          className="mt-[24px] sm:h-[32px] md:h-[32px] sm:text-h7 md:text-h7 lg:h-[40px] lg:text-h6"
+        />
+      )
+    }
   </div>
 
   <Image
     src={imgSrc}
     alt="Use case"
     width="284px"
-    class={`flex-grow md:w-[260px] md:mb-[24px] lg:w-[284px] lg:mb-[0px] ${isLast ? 'mb-0' : 'mb-[0px]'}`}
+    class={`flex-grow w-[260px] mb-[24px] lg:w-[284px] lg:mb-[0px] ${isLast ? 'mb-0' : 'mb-[0px]'}`}
     quality="100"
     format="png"
   />
