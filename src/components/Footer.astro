@@ -1,15 +1,9 @@
 ---
-import Facebook from '@assets/Facebook.astro';
-import YouTube from '@assets/YouTube.astro';
-import Instagram from '@assets/Instagram.astro';
 import LinkedIn from '@assets/LinkedIn.astro';
 import AlunexLogoFooter from '@assets/AlunexLogoFooter.astro';
 
 const socialLinks = {
-  youtube: '#',
-  facebook: '#',
   linkedIn: '#',
-  instagram: '#',
 };
 ---
 
@@ -21,9 +15,6 @@ const socialLinks = {
   </div>
 
   <div class="flex gap-x-[4px]">
-    <a href={socialLinks.facebook} target="_blank"><Facebook /></a>
     <a href={socialLinks.linkedIn} target="_blank"><LinkedIn /></a>
-    <a href={socialLinks.youtube} target="_blank"><YouTube /></a>
-    <a href={socialLinks.instagram} target="_blank"><Instagram /></a>
   </div>
 </footer>

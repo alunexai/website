@@ -13,19 +13,17 @@ const contentId = 'accordionContent';
 ---
 
 <div
-  class="accordion flex w-full flex-col p-[16px] rounded-[16px] bg-bg-tertiary"
+  class="accordion flex w-full flex-col p-[16px] rounded-[16px] bg-bg-tertiary hover:bg-bg-secondary cursor-pointer"
 >
   <div class="flex w-full justify-between items-center py-[6px]">
-    <p
-      class="text-color-main text-h7 leading-[20px] lg:text-h5 lg:leading-[25px] font-medium"
-    >
+    <p class="text-color-main text-h6 leading-[24px] font-medium">
       {title}
     </p>
 
     <button
       id={controlId}
-      class="accordion-button transition-transform text-color-gray-50 rotate-0"
       aria-expanded="false"
+      class="accordion-button transition-transform text-color-gray-50 rotate-0 pointer-events-none"
     >
       <Chevron />
     </button>
@@ -35,9 +33,7 @@ const contentId = 'accordionContent';
     id={contentId}
     class="accordion-content overflow-hidden transition-max-height duration-700 ease-in-out max-h-0"
   >
-    <p
-      class="text-color-description font-medium text-h8 leading-[16px] lg:text-h7 lg:leading-[20px]"
-    >
+    <p class="text-color-case-title font-medium text-h5 leading-[24px]">
       {content}
     </p>
   </div>
@@ -48,15 +44,17 @@ const contentId = 'accordionContent';
     const button = accordion.querySelector('.accordion-button');
     const content = accordion.querySelector('.accordion-content');
 
-    button.addEventListener('click', () => {
+    accordion.addEventListener('click', () => {
       const isExpanded = button.getAttribute('aria-expanded') === 'true';
       button.setAttribute('aria-expanded', String(!isExpanded));
       if (isExpanded) {
         content.style.maxHeight = '0';
         button.classList.remove('rotate-180');
+        content.classList.remove('mt-[4px]');
       } else {
         content.style.maxHeight = content.scrollHeight + 'px';
         button.classList.add('rotate-180');
+        content.classList.add('mt-[4px]');
       }
     });
   });
