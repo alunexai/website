@@ -13,7 +13,7 @@ const contentId = 'accordionContent';
 ---
 
 <div
-  class="accordion flex w-full flex-col p-[16px] rounded-[16px] bg-bg-tertiary hover:bg-bg-secondary cursor-pointer"
+  class="accordion flex w-full flex-col p-[16px] rounded-[16px] bg-bg-tertiary lg:hover:bg-bg-secondary cursor-pointer"
 >
   <div class="flex w-full justify-between items-center py-[6px]">
     <p class="text-color-main text-h6 leading-[24px] font-medium">
@@ -31,7 +31,7 @@ const contentId = 'accordionContent';
 
   <div
     id={contentId}
-    class="accordion-content overflow-hidden transition-max-height duration-700 ease-in-out max-h-0"
+    class="accordion-content overflow-hidden transition-max-height duration-[350ms] ease-in-out max-h-0"
   >
     <p class="text-color-case-title font-medium text-h5 leading-[24px]">
       {content}
