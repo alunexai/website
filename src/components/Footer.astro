@@ -1,10 +1,7 @@
 ---
 import LinkedIn from '@assets/LinkedIn.astro';
 import AlunexLogoFooter from '@assets/AlunexLogoFooter.astro';
-
-const socialLinks = {
-  linkedIn: '#',
-};
+import {SOCIAL_LINKS} from 'src/lib/constants';
 ---
 
 <footer
@@ -15,6 +12,6 @@ const socialLinks = {
   </div>
 
   <div class="flex gap-x-[4px]">
-    <a href={socialLinks.linkedIn} target="_blank"><LinkedIn /></a>
+    <a href={SOCIAL_LINKS.linkedIn} target="_blank"><LinkedIn /></a>
   </div>
 </footer>

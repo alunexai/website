@@ -1,17 +1,14 @@
 ---
-import Button from 'src/components/Button.astro';
-import Input from 'src/components/Input.astro';
+import Mailchimp from 'src/components/Mailchimp.astro';
 
 const title = 'Get our latest product updates';
 const subTitle = 'Unsubscribe any time';
-const inputPlaceholder = 'Enter your mail here';
-const subscribeBtnText = 'Get updates';
 ---
 
 <div class="flex justify-center px-[16px] py-[40px] lg:py-[80px]">
-  <div class="gradient-border w-full max-w-[1000px] h-[400px]">
+  <div class="gradient-border w-full max-w-[1000px]">
     <div
-      class="gradient-border-content px-[16px] h-full flex flex-col items-center justify-center"
+      class="gradient-border-content px-[16px] flex flex-col items-center justify-center py-[100px]"
     >
       <p class="text-color-main text-center text-h4 font-bold leading-[32px]">
         {title}
@@ -23,14 +20,8 @@ const subscribeBtnText = 'Get updates';
         {subTitle}
       </p>
 
-      <div class="flex flex-col w-full max-w-[400px] mt-[32px]">
-        <Input type="email" placeholder={inputPlaceholder} className="w-full" />
-
-        <Button
-          className="mt-[16px] w-full"
-          size="md"
-          text={subscribeBtnText}
-        />
+      <div class="flex flex-col w-full max-w-[500px] mt-[32px]">
+        <Mailchimp />
       </div>
     </div>
   </div>

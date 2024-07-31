@@ -20,6 +20,8 @@ const {
   disabled,
   className,
   id,
+  type,
+  name,
 } = Astro.props as Props;
 
 const getStyles = (variant: ButtonVariant, size: ButtonSize) => {
@@ -39,6 +41,8 @@ const getStyles = (variant: ButtonVariant, size: ButtonSize) => {
 ---
 
 <a
+  type={type}
+  name={name}
   id={id}
   href={disabled ? null : href}
   data-size={size}

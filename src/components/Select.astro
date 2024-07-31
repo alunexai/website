@@ -1,20 +1,19 @@
 ---
 interface Props {
   type: HTMLInputElement['type'];
-  placeholder?: boolean;
+  options: {label: string; value: string}[];
   className?: string;
   label?: string;
   id?: string;
   name?: string;
   required?: boolean;
-  maxLength?: string;
 }
 
-const {type, placeholder, className, label, id, required, name, maxLength} =
+const {type, className, label, id, required, name, options} =
   Astro.props as Props;
 ---
 
-<>
+<div class="select-wrapper">
   {
     label && (
       <label class="text-color-main" for={id}>
@@ -23,27 +22,48 @@ const {type, placeholder, className, label, id, required, name, maxLength} =
       </label>
     )
   }
-  <input
-    type={type}
-    placeholder={placeholder}
+  <select
+    id={id}
     name={name}
-    maxlength={maxLength}
     class={`
-    
+    appearance-none
     bg-color-gray-100
     border-[1px]
     border-color-gray-50
     rounded-[16px]
-    !px-[16px]
-    !py-[14px]
+    px-[16px]
+    py-[14px]
     text-color-main
     font-medium
     leading-[20px]
     text-h7
     hover:border-color-description
+    hover:cursor-pointer
     focus-visible:border-color-main
     outline-none
     ${className ?? ''}
    `}
-  />
-</>
+    >{
+      options.map(({label, value}) => (
+        <option selected={value === 'USA'} value={value}>
+          {label}
+        </option>
+      ))
+    }</select
+  >
+</div>
+
+<style>
+  .select-wrapper {
+    position: relative;
+  }
+
+  .select-wrapper::after {
+    content: '▼';
+    font-size: 14px;
+    top: 42px;
+    right: 20px;
+    position: absolute;
+    color: #fff;
+  }
+</style>
