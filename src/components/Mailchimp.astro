@@ -309,83 +309,14 @@ const COUNTRIES = [
             className="text"
           />
         </div>
-        <div class="mc-address-group flex flex-col items-center w-full">
-          <div class="mc-field-group">
-            <Input
-              id="mce-ADDRESS-addr1"
-              label="Address"
-              type="text"
-              name="ADDRESS[addr1]"
-              maxlength="70"
-            />
-          </div>
-          <div class="mc-field-group">
-            <Input
-              id="mce-ADDRESS-addr2"
-              label="Address Line 2"
-              type="text"
-              name="ADDRESS[addr2]"
-              maxlength="70"
-            />
-          </div>
-          <div
-            class="mc-address-fields-group sm:flex sm:flex-col w-full items-center"
-          >
-            <div class="mc-field-group">
-              <Input
-                id="mce-ADDRESS-city"
-                label="City"
-                type="text"
-                name="ADDRESS[city]"
-                maxlength="40"
-              />
-            </div>
-            <div class="mc-field-group">
-              <Input
-                id="mce-ADDRESS-state"
-                label="State/Province/Region"
-                type="text"
-                name="ADDRESS[state]"
-                maxlength="20"
-              />
-            </div>
-            <div class="mc-field-group">
-              <Input
-                id="mce-ADDRESS-zip"
-                label="Postal / Zip Code"
-                type="text"
-                name="ADDRESS[zip]"
-                maxlength="10"
-              />
-            </div>
-          </div>
-          <div class="mc-field-group">
-            <Select
-              id="mce-ADDRESS-country"
-              label="Coutry"
-              name="ADDRESS[country]"
-              options={COUNTRIES}
-            />
-          </div>
-        </div>
-        <div class="mc-field-group">
-          <Input
-            id="mce-PHONE"
-            label="Phone Number"
-            type="text"
-            name="PHONE"
-            className="REQ_CSS"
-          />
-        </div>
         <div id="mce-responses" class="clear foot flex w-full justify-center">
           <div class="response" id="mce-error-response" style="display: none;">
           </div>
           <div
-            class="response text-h5 font-medium text-color-success text-center"
+            class="response text-h5 font-medium text-color-success text-center !p-0 !m-0"
             id="mce-success-response"
             style="display: none;"
           >
-            You rock! Thanks for subscribing!
           </div>
         </div>
         <div aria-hidden="true" style="position: absolute; left: -5000px;">
@@ -414,8 +345,8 @@ const COUNTRIES = [
   </div>
   <script
     type="text/javascript"
-    src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"
-  ></script><script type="text/javascript">
+    src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+  <script type="text/javascript">
     (function ($) {
       window.fnames = new Array();
       window.ftypes = new Array();
@@ -431,11 +362,55 @@ const COUNTRIES = [
       ftypes[4] = 'phone';
     })(jQuery);
     var $mcj = jQuery.noConflict(true);
+
+    var target = document.getElementById('mce-success-response');
+
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (target.innerHTML === 'Thank you for subscribing!') {
+          target.innerHTML =
+            '<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12.5" cy="12" r="12" fill="#52E078"/><path d="M6.5 11L11.5 16L18.5 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            '<p id="success-text">Thanks for subscribing!</p>';
+
+          target.style.display = 'flex';
+          target.style.justifyContent = 'center';
+          target.style.alignItems = 'center';
+          target.style.gap = '8px';
+
+          const successText = document.getElementById('success-text');
+          if (window.innerWidth < 400) {
+            successText.style.fontSize = '16px';
+          } else {
+            successText.style.fontSize = '18px';
+          }
+
+          document
+            .querySelectorAll('.mc-field-group, .optionalParent')
+            .forEach(function (el) {
+              el.classList.add('hidden');
+            });
+        }
+      });
+    });
+
+    var config = {attributes: true, childList: true, characterData: true};
+
+    observer.observe(target, config);
   </script>
 </div>
 
 <style>
   label {
     color: #fff;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @media (max-width: 400px) {
+    .success {
+      font-size: 16px;
+    }
   }
 </style>
