@@ -1,7 +1,6 @@
 import {type Config} from 'tailwindcss';
 
 const config: Config = {
-  important: true,
   content: [
     './public/**/*.html',
     './src/**/*.{astro,js,jsx,svelte,ts,tsx,vue}',
