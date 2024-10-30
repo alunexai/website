@@ -1,6 +1,6 @@
 ---
 import PricingPlan from '@components/PricingPlan.astro';
-import {PRICING} from '@lib/constants';
+import {PRICING, SOCIAL_LINKS} from '@lib/constants';
 import type {PricingPlanItem} from '@lib/models';
 
 const title = 'Pricing';
@@ -16,7 +16,7 @@ const plans: PricingPlanItem[] = [
       '5MB file size max',
       'Up to 500 queries/month',
     ],
-    btn: undefined,
+    btn: {text: 'Select', href: SOCIAL_LINKS.demoAlunex},
   },
   {
     title: 'Professional',

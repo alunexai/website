@@ -2,9 +2,10 @@ export type UseCaseItem = {
   title: string;
   description: string;
   isReady: boolean;
-  btn?: {text: string};
+  btn?: {text: string; href: string};
   imgSrc: object;
   position: 'left' | 'right';
+  isLast: boolean;
 };
 
 export type PricingPlanItem = {
@@ -12,7 +13,7 @@ export type PricingPlanItem = {
   price: string | undefined;
   isReady: boolean;
   benefits: string[];
-  btn: {text: string} | undefined;
+  btn: {text: string; href: string} | undefined;
 };
 
 export type FAQItem = {

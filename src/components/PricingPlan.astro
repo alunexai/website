@@ -35,5 +35,9 @@ const readyText = 'Ready to use';
     </ul>
   </div>
 
-  {btn && <Button className="w-full mt-[24px]" text={btn.text} />}
+  {
+    btn && (
+      <Button className="w-full mt-[24px]" href={btn.href} text={btn.text} />
+    )
+  }
 </div>
