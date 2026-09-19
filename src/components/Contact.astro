@@ -1,0 +1,41 @@
+---
+import {CONTACT, SOCIAL_LINKS} from '@lib/constants';
+---
+
+<div id={CONTACT} class="w-full bg-bg-surface border-t border-white/10">
+  <div
+    class="h-[3px] bg-gradient-to-r from-accent-blue via-accent-cyan to-accent-green"
+  >
+  </div>
+  <div
+    class="max-w-[780px] mx-auto px-[16px] lg:px-[40px] py-[64px] lg:py-[100px] text-center flex flex-col items-center gap-[20px]"
+  >
+    <div
+      class="text-h8 lg:text-h7 font-semibold tracking-[0.12em] uppercase text-accent-cyan"
+    >
+      Get in touch
+    </div>
+    <div class="flex flex-wrap justify-center gap-[28px] mt-[12px]">
+      <a
+        href={SOCIAL_LINKS.email}
+        class="text-h6 font-semibold text-[#7FD6E8] hover:text-white border-b border-[#7FD6E8]/40 pb-[2px] transition-colors"
+      >
+        bill@alunex.ai
+      </a>
+      <a
+        href={SOCIAL_LINKS.linkedIn}
+        target="_blank"
+        class="text-h6 font-semibold text-[#7FD6E8] hover:text-white border-b border-[#7FD6E8]/40 pb-[2px] transition-colors"
+      >
+        LinkedIn
+      </a>
+      <a
+        href={SOCIAL_LINKS.github}
+        target="_blank"
+        class="text-h6 font-semibold text-[#7FD6E8] hover:text-white border-b border-[#7FD6E8]/40 pb-[2px] transition-colors"
+      >
+        GitHub
+      </a>
+    </div>
+  </div>
+</div>

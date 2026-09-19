@@ -1,17 +1,8 @@
 ---
-import LinkedIn from '@assets/LinkedIn.astro';
-import AlunexLogoFooter from '@assets/AlunexLogoFooter.astro';
-import {SOCIAL_LINKS} from 'src/lib/constants';
 ---
 
 <footer
-  class="w-full flex items-center justify-between px-[16px] py-[12px] border-t-[1px] border-bg-secondary"
+  class="w-full flex items-center justify-center px-[16px] py-[32px] border-t-[1px] border-white/10"
 >
-  <div class="flex gap-x-[16px]">
-    <a href="/"><AlunexLogoFooter /></a>
-  </div>
-
-  <div class="flex gap-x-[4px]">
-    <a href={SOCIAL_LINKS.linkedIn} target="_blank"><LinkedIn /></a>
-  </div>
+  <p class="text-h7 text-text-muted">&copy; Bill Leece &middot; Austin, TX</p>
 </footer>

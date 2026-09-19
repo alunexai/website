@@ -1,0 +1,51 @@
+---
+import {CONTACT, EXPERIENCE} from '@lib/constants';
+---
+
+<section class="hero-glow relative w-full overflow-hidden">
+  <div
+    class="max-w-[1120px] mx-auto px-[16px] lg:px-[40px] pt-[64px] pb-[64px] lg:pt-[96px] lg:pb-[88px] flex flex-col gap-[24px] lg:gap-[28px]"
+  >
+    <div
+      class="text-h8 lg:text-h7 font-semibold tracking-[0.12em] uppercase text-accent-cyan"
+    >
+      Product Management &middot; Applied AI
+    </div>
+    <h1
+      class="font-serif font-semibold text-[36px] leading-[1.15] lg:text-h1 lg:leading-[1.1] text-color-main max-w-[800px]"
+    >
+      Product leadership and hands-on AI execution, from founding teams to
+      Google scale.
+    </h1>
+    <div class="flex flex-wrap gap-[16px] mt-[8px]">
+      <a
+        href={`#${CONTACT}`}
+        class="inline-flex items-center justify-center h-[48px] px-[28px] rounded-[4px] text-h6 font-semibold text-white bg-gradient-to-br from-accent-blue to-accent-green hover:brightness-110 transition-[filter]"
+      >
+        Stay in touch
+      </a>
+      <a
+        href={`#${EXPERIENCE}`}
+        class="inline-flex items-center justify-center h-[46px] px-[28px] rounded-[4px] text-h6 font-semibold text-color-main border border-white/35 hover:border-accent-cyan hover:text-accent-cyan transition-colors"
+      >
+        View experience
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-glow {
+    background:
+      radial-gradient(
+        900px 620px at 18% 30%,
+        rgba(28, 99, 183, 0.28),
+        transparent 62%
+      ),
+      radial-gradient(
+        900px 620px at 85% 40%,
+        rgba(24, 150, 102, 0.22),
+        transparent 60%
+      );
+  }
+</style>
