@@ -1,0 +1,59 @@
+---
+import {SERVICES} from '@lib/constants';
+
+const ENGAGEMENTS = [
+  {
+    number: '01',
+    title: 'Fractional AI Product Leadership',
+    body: 'Embedded product leadership for AI agent, data, and platform teams — roadmap definition, cross-functional execution, and outcome ownership, informed by day-to-day experience building LLM judges and leading AI agent evaluation and observability work.',
+  },
+  {
+    number: '02',
+    title: 'AI Strategy & Adoption Consulting',
+    body: "Helping SMBs and startups identify where AI actually moves the needle, and standing up the data and evaluation foundations to get there — the same work behind data-analytics practices I've built from scratch.",
+  },
+  {
+    number: '03',
+    title: 'Applied AI Building',
+    body: 'Rather than handing off a slide deck, I get hands-on — designing evaluation frameworks, agent tooling, and LLM judges, and directing the AI agents that build them, end to end.',
+  },
+  {
+    number: '04',
+    title: 'Advisory & Board',
+    body: 'Strategic counsel for founders and executive teams navigating AI product decisions, drawing on board-level experience aligning product, engineering, and go-to-market.',
+  },
+];
+---
+
+<div id={SERVICES} class="w-full bg-bg-surface border-y border-white/10">
+  <div class="max-w-[1120px] mx-auto px-[16px] lg:px-[40px] py-[64px] lg:py-[100px]">
+    <div
+      class="text-h8 lg:text-h7 font-semibold tracking-[0.12em] uppercase text-accent-cyan mb-[16px]"
+    >
+      Services
+    </div>
+    <h2
+      class="font-serif font-semibold text-[26px] lg:text-h4 text-color-main max-w-[620px] mb-[48px]"
+    >
+      Engagement Types
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-[1px] bg-white/10 border border-white/10">
+      {
+        ENGAGEMENTS.map(item => (
+          <div class="bg-bg-card p-[24px] lg:p-[40px] flex flex-col gap-[14px]">
+            <div class="w-[36px] h-[36px] rounded-full bg-[#16303A] border border-white/10 flex items-center justify-center font-serif font-semibold text-h7 text-accent-cyan">
+              {item.number}
+            </div>
+            <h3 class="font-serif font-semibold text-h24 text-color-main">
+              {item.title}
+            </h3>
+            <p class="text-h7 leading-[1.65] text-text-secondary">
+              {item.body}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

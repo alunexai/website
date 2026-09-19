@@ -41,7 +41,7 @@ const getStyles = (variant: ButtonVariant, size: ButtonSize) => {
 ---
 
 <a
-  target={href ? '_blank' : undefined}
+  target={href && !href.startsWith('#') ? '_blank' : undefined}
   type={type}
   name={name}
   id={id}

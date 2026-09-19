@@ -7,9 +7,11 @@ const config: Config = {
   ],
   theme: {
     colors: {
-      'bg-primary': '#000000',
+      'bg-primary': '#06080A',
       'bg-secondary': '#333333',
       'bg-tertiary': '#1A1A1A',
+      'bg-surface': '#0B0F12',
+      'bg-card': '#0F1418',
       'btn-main': {
         'normal-bg': '#0C81ED',
         'hover-bg': '#3D9DF5',
@@ -30,10 +32,15 @@ const config: Config = {
       'color-blue-50': '#0C81ED',
       'color-gray-50': '#808080',
       'color-gray-100': '#000000',
+      'accent-blue': '#3890C2',
+      'accent-cyan': '#2CBDDA',
+      'accent-green': '#22A06B',
+      'text-secondary': '#AEB8C0',
+      'text-muted': '#76828B',
     },
     fontFamily: {
-      sans: ['Inter', 'sans-serif'],
-      serif: ['Inter', 'serif'],
+      sans: ['Public Sans', 'sans-serif'],
+      serif: ['Fraunces', 'serif'],
     },
     fontSize: {
       h1: '56px',

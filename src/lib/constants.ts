@@ -1,8 +1,10 @@
-export const USE_CASES = 'use-cases';
-export const PRICING = 'pricing';
-export const FAQ = 'FAQ';
+export const ABOUT = 'about';
+export const SERVICES = 'services';
+export const EXPERIENCE = 'experience';
+export const CONTACT = 'contact';
 
 export const SOCIAL_LINKS = {
-  linkedIn: 'https://www.linkedin.com/company/alunex-ai',
-  demoAlunex: 'https://demo.alunex.ai/',
+  linkedIn: 'https://www.linkedin.com/in/leece',
+  github: 'https://github.com/wjleece',
+  email: 'mailto:bill@alunex.ai',
 };

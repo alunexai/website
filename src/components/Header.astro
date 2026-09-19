@@ -1,16 +1,14 @@
 ---
 import Button from '@components/Button.astro';
-import {USE_CASES, PRICING, FAQ} from '@lib/constants';
-import AlunexLogoHeader from '@assets/AlunexLogoHeader.astro';
+import {ABOUT, SERVICES, EXPERIENCE, CONTACT} from '@lib/constants';
 import BurgerIcon from 'src/assets/BurgerIcon.astro';
 import CloseIcon from 'src/assets/CloseIcon.astro';
 
 const BUTTONS_CONTENT = {
-  useCases: {name: 'Use Cases', href: `#${USE_CASES}`},
-  pricing: {name: 'Pricing', href: `#${PRICING}`},
-  faq: {name: 'FAQ', href: `#${FAQ}`},
-  signIn: {name: 'Sign In', href: '#'},
-  getStarted: {name: 'Get Started', href: '#'},
+  about: {name: 'About', href: `#${ABOUT}`},
+  services: {name: 'Services', href: `#${SERVICES}`},
+  experience: {name: 'Experience', href: `#${EXPERIENCE}`},
+  contact: {name: 'Stay in touch', href: `#${CONTACT}`},
 };
 ---
 
@@ -23,45 +21,42 @@ const BUTTONS_CONTENT = {
   >
     <div class="flex w-full flex-col">
       <div class="flex items-center justify-between w-full">
-        <a href="/"><AlunexLogoHeader /></a>
+        <a
+          href="/"
+          class="font-serif font-semibold text-h6 lg:text-h5 text-color-main"
+          >Bill Leece</a
+        >
 
         <nav class="flex items-center justify-center">
           <div class="hidden lg:flex flex-nowrap gap-x-[8px]">
             <Button
-              text={BUTTONS_CONTENT.useCases.name}
-              href={BUTTONS_CONTENT.useCases.href}
+              text={BUTTONS_CONTENT.about.name}
+              href={BUTTONS_CONTENT.about.href}
               variant="link"
               size="md"
             />
             <Button
-              text={BUTTONS_CONTENT.pricing.name}
-              href={BUTTONS_CONTENT.pricing.href}
+              text={BUTTONS_CONTENT.services.name}
+              href={BUTTONS_CONTENT.services.href}
               variant="link"
               size="md"
             />
             <Button
-              text={BUTTONS_CONTENT.faq.name}
-              href={BUTTONS_CONTENT.faq.href}
+              text={BUTTONS_CONTENT.experience.name}
+              href={BUTTONS_CONTENT.experience.href}
               variant="link"
               size="md"
             />
-            <!--<Button-->
-            <!--  text={BUTTONS_CONTENT.signIn.name}-->
-            <!--  href={BUTTONS_CONTENT.signIn.href}-->
-            <!--  variant="link"-->
-            <!--  size="md"-->
-            <!--/>-->
           </div>
         </nav>
 
         <div class="flex items-center">
-          <Button
-            text={BUTTONS_CONTENT.getStarted.name}
-            href={BUTTONS_CONTENT.getStarted.href}
-            variant="main"
-            size="sm"
-            className="invisible"
-          />
+          <a
+            href={BUTTONS_CONTENT.contact.href}
+            class="hidden lg:flex items-center justify-center h-[40px] px-[16px] text-h6 font-bold rounded-[16px] text-white bg-gradient-to-br from-accent-blue to-accent-green hover:brightness-110 transition-[filter]"
+          >
+            {BUTTONS_CONTENT.contact.name}
+          </a>
 
           <button id="burgerOpenBtn" class="lg:hidden ml-[16px]">
             <BurgerIcon />
@@ -77,29 +72,29 @@ const BUTTONS_CONTENT = {
         class="lg:hidden hidden flex items-center flex-col mt-[16px]"
       >
         <Button
-          text={BUTTONS_CONTENT.useCases.name}
-          href={BUTTONS_CONTENT.useCases.href}
+          text={BUTTONS_CONTENT.about.name}
+          href={BUTTONS_CONTENT.about.href}
           variant="link"
           size="md"
         />
         <Button
-          text={BUTTONS_CONTENT.pricing.name}
-          href={BUTTONS_CONTENT.pricing.href}
+          text={BUTTONS_CONTENT.services.name}
+          href={BUTTONS_CONTENT.services.href}
           variant="link"
           size="md"
         />
         <Button
-          text={BUTTONS_CONTENT.faq.name}
-          href={BUTTONS_CONTENT.faq.href}
+          text={BUTTONS_CONTENT.experience.name}
+          href={BUTTONS_CONTENT.experience.href}
           variant="link"
           size="md"
         />
-        <!--<Button-->
-        <!--  text={BUTTONS_CONTENT.signIn.name}-->
-        <!--  href={BUTTONS_CONTENT.signIn.href}-->
-        <!--  variant="link"-->
-        <!--  size="md"-->
-        <!--/>-->
+        <Button
+          text={BUTTONS_CONTENT.contact.name}
+          href={BUTTONS_CONTENT.contact.href}
+          variant="link"
+          size="md"
+        />
       </div>
     </div>
   </header>

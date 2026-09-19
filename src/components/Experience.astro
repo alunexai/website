@@ -1,0 +1,74 @@
+---
+import {EXPERIENCE} from '@lib/constants';
+
+const ROLES = [
+  {
+    company: 'Google',
+    role: 'Lead Product Manager',
+    dates: '2019 – 2022',
+    body: 'Led next-generation CRM and cross-platform collaboration at Google scale, driving $10B+ in aggregate margin expansion with 80%+ CSAT.',
+  },
+  {
+    company: 'Cinarra Systems',
+    role: 'VP of Product Management (founding team)',
+    dates: '2013 – 2019',
+    body: "Built product, analytics, and ad-ops teams from scratch; grew revenue $0 to $15M as Yahoo! Japan's main O2O measurement provider. Acquired by SoftBank; also served on the board of the Cinarra–SoftBank Mobile joint venture.",
+  },
+  {
+    company: 'OpenAI',
+    role: 'Red Team Contributor (compensated)',
+    dates: '',
+    body: 'Assessed the risk and safety profile of pre-release models and systems.',
+  },
+  {
+    company: 'Other Startups & Large Corporates',
+    role: 'Product & AI Leadership Roles',
+    dates: '2004 – present',
+    body: 'Fractional and full-time product leadership across AI, data, and ad-tech — including founding a real-time-bidding trading desk in Southeast Asia, standing up data-analytics practices for early-stage startups, and, most recently, directing evaluation and observability systems for AI agents.',
+  },
+];
+---
+
+<div
+  id={EXPERIENCE}
+  class="max-w-[1120px] mx-auto px-[16px] lg:px-[40px] py-[64px] lg:py-[100px]"
+>
+  <div
+    class="text-h8 lg:text-h7 font-semibold tracking-[0.12em] uppercase text-accent-cyan mb-[16px]"
+  >
+    Experience
+  </div>
+  <h2
+    class="font-serif font-semibold text-[26px] lg:text-h4 text-color-main mb-[48px]"
+  >
+    Career highlights
+  </h2>
+
+  <div class="flex flex-col">
+    {
+      ROLES.map((item, i) => (
+        <div
+          class:list={[
+            'flex flex-col lg:flex-row gap-[8px] lg:gap-[48px] py-[28px] border-t border-white/10',
+            {'border-b': i === ROLES.length - 1},
+          ]}
+        >
+          <div class="lg:w-[240px] lg:flex-shrink-0">
+            <div class="text-h6 font-semibold text-color-main">
+              {item.company}
+            </div>
+            <div class="text-h7 text-text-secondary mt-[2px]">
+              {item.role}
+            </div>
+            {item.dates && (
+              <div class="text-h8 text-text-muted mt-[6px]">{item.dates}</div>
+            )}
+          </div>
+          <p class="text-h7 leading-[1.65] text-text-secondary max-w-[620px]">
+            {item.body}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</div>
