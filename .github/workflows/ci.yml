@@ -18,3 +18,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+        env:
+          # Supabase publishable key — safe to expose (RLS, not key secrecy,
+          # protects data). Same project the iOS insider-trading-app uses.
+          PUBLIC_SUPABASE_URL: https://xkobcymztzpievdxchqc.supabase.co
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_b9k3kn8LkaW7DH-3gGo2tg_DaGedeWU

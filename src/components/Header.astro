@@ -8,6 +8,7 @@ const BUTTONS_CONTENT = {
   about: {name: 'About', href: `#${ABOUT}`},
   services: {name: 'Services', href: `#${SERVICES}`},
   experience: {name: 'Experience', href: `#${EXPERIENCE}`},
+  signals: {name: 'Insider Signals', href: '/insider-trading-signals'},
   contact: {name: 'Stay in touch', href: `#${CONTACT}`},
 };
 ---
@@ -44,6 +45,12 @@ const BUTTONS_CONTENT = {
             <Button
               text={BUTTONS_CONTENT.experience.name}
               href={BUTTONS_CONTENT.experience.href}
+              variant="link"
+              size="md"
+            />
+            <Button
+              text={BUTTONS_CONTENT.signals.name}
+              href={BUTTONS_CONTENT.signals.href}
               variant="link"
               size="md"
             />
@@ -86,6 +93,12 @@ const BUTTONS_CONTENT = {
         <Button
           text={BUTTONS_CONTENT.experience.name}
           href={BUTTONS_CONTENT.experience.href}
+          variant="link"
+          size="md"
+        />
+        <Button
+          text={BUTTONS_CONTENT.signals.name}
+          href={BUTTONS_CONTENT.signals.href}
           variant="link"
           size="md"
         />
