@@ -7,8 +7,10 @@ import {
   peDisplay,
   memberDisplayName,
   partyStateLabel,
+  groupConvergenceAlerts,
   type BuyAlertRow,
   type CongressAlertRow,
+  type ConvergenceAlertRow,
 } from './format';
 
 describe('abbreviatedUSD', () => {
@@ -120,5 +122,53 @@ describe('partyStateLabel', () => {
   it('is blank when party or state is missing (not yet enriched)', () => {
     expect(partyStateLabel({party: null, state: 'AR'} as CongressAlertRow)).toBe('');
     expect(partyStateLabel({party: 'R', state: null} as CongressAlertRow)).toBe('');
+  });
+});
+
+describe('groupConvergenceAlerts', () => {
+  const row = (overrides: Partial<ConvergenceAlertRow>): ConvergenceAlertRow => ({
+    ticker: 'PLTR',
+    distinct_officers: 4,
+    total_buy_usd: 2_100_000,
+    market_cap_musd: 65_000,
+    min_pe: 120,
+    corporate_latest_buy: '2026-09-10',
+    member_name: 'Okafor, Rosa (Senator)',
+    state: 'TX',
+    party: 'R',
+    chamber: 'senate',
+    congress_amount_range: '$100,001 - $250,000',
+    congress_transaction_date: '2026-09-05',
+    ...overrides,
+  });
+
+  it('returns one card per ticker with the corporate summary carried over', () => {
+    const cards = groupConvergenceAlerts([row({})]);
+    expect(cards).toHaveLength(1);
+    expect(cards[0].ticker).toBe('PLTR');
+    expect(cards[0].distinct_officers).toBe(4);
+    expect(cards[0].total_buy_usd).toBe(2_100_000);
+  });
+
+  it('groups multiple Congressional buyers on the same ticker into one card', () => {
+    const cards = groupConvergenceAlerts([
+      row({member_name: 'Okafor, Rosa (Senator)'}),
+      row({member_name: 'Whitfield, Jordan (Senator)', party: 'D', state: 'CO'}),
+    ]);
+    expect(cards).toHaveLength(1);
+    expect(cards[0].members).toHaveLength(2);
+    expect(cards[0].members[1].party).toBe('D');
+  });
+
+  it('keeps separate tickers as separate cards', () => {
+    const cards = groupConvergenceAlerts([
+      row({ticker: 'PLTR'}),
+      row({ticker: 'NVDA', distinct_officers: 2}),
+    ]);
+    expect(cards.map(c => c.ticker).sort()).toEqual(['NVDA', 'PLTR']);
+  });
+
+  it('returns an empty array for no rows (the common case today)', () => {
+    expect(groupConvergenceAlerts([])).toEqual([]);
   });
 });

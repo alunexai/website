@@ -38,7 +38,7 @@ export function abbreviatedUSD(value: number): string {
   return `${sign}$${trimmed}${suffix}`;
 }
 
-export function officersLabel(row: BuyAlertRow): string {
+export function officersLabel(row: Pick<BuyAlertRow, 'distinct_officers'>): string {
   return `${row.distinct_officers} officer${row.distinct_officers === 1 ? '' : 's'}`;
 }
 
@@ -72,8 +72,10 @@ export type CongressAlertRow = {
 
 /// "Boozman, John (Senator)" -> "Sen. John Boozman". Falls back to the raw
 /// member_name unchanged if it doesn't match the expected shape, rather than
-/// mangling a name the parser doesn't recognize.
-export function memberDisplayName(row: CongressAlertRow): string {
+/// mangling a name the parser doesn't recognize. Takes just the field it
+/// needs (not the full CongressAlertRow) so it also works on a convergence
+/// card's per-member entries.
+export function memberDisplayName(row: Pick<CongressAlertRow, 'member_name'>): string {
   const m = row.member_name.match(/^([^,]+),\s*(.+?)\s*\(Senator\)$/);
   if (!m) return row.member_name;
   const [, last, first] = m;
@@ -82,7 +84,73 @@ export function memberDisplayName(row: CongressAlertRow): string {
 
 /// "(R-AR)" -- resolved as fine to show (party + state), per the design doc's
 /// UX decision. "" when either is missing (not yet enriched / no match).
-export function partyStateLabel(row: CongressAlertRow): string {
+export function partyStateLabel(row: Pick<CongressAlertRow, 'party' | 'state'>): string {
   if (!row.party || !row.state) return '';
   return `(${row.party}-${row.state})`;
+}
+
+// Mirrors insider-trading-app's convergence_alerts_v1 view (DESIGN §3.8e): a
+// ticker with both a qualifying corporate buy and a qualifying Congressional
+// buy. One row per (ticker, Congressional transaction) -- a ticker with two
+// Senators buying arrives as two rows sharing the same corporate summary.
+export type ConvergenceAlertRow = {
+  ticker: string;
+  distinct_officers: number;
+  total_buy_usd: number | null;
+  market_cap_musd: number | null;
+  min_pe: number | null;
+  corporate_latest_buy: string;
+  member_name: string;
+  state: string | null;
+  party: string | null;
+  chamber: string;
+  congress_amount_range: string;
+  congress_transaction_date: string;
+};
+
+export type ConvergenceCard = {
+  ticker: string;
+  distinct_officers: number;
+  total_buy_usd: number | null;
+  market_cap_musd: number | null;
+  min_pe: number | null;
+  corporate_latest_buy: string;
+  members: Array<{
+    member_name: string;
+    state: string | null;
+    party: string | null;
+    chamber: string;
+    amount_range: string;
+    transaction_date: string;
+  }>;
+};
+
+/// Groups the flat (ticker, Congressional transaction) rows into one card per
+/// ticker, each carrying every Congressional buyer who converged on it.
+export function groupConvergenceAlerts(rows: ConvergenceAlertRow[]): ConvergenceCard[] {
+  const byTicker = new Map<string, ConvergenceCard>();
+  for (const r of rows) {
+    let card = byTicker.get(r.ticker);
+    if (!card) {
+      card = {
+        ticker: r.ticker,
+        distinct_officers: r.distinct_officers,
+        total_buy_usd: r.total_buy_usd,
+        market_cap_musd: r.market_cap_musd,
+        min_pe: r.min_pe,
+        corporate_latest_buy: r.corporate_latest_buy,
+        members: [],
+      };
+      byTicker.set(r.ticker, card);
+    }
+    card.members.push({
+      member_name: r.member_name,
+      state: r.state,
+      party: r.party,
+      chamber: r.chamber,
+      amount_range: r.congress_amount_range,
+      transaction_date: r.congress_transaction_date,
+    });
+  }
+  return [...byTicker.values()];
 }
