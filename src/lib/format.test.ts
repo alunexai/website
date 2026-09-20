@@ -5,7 +5,10 @@ import {
   totalBuyDisplay,
   marketCapDisplay,
   peDisplay,
+  memberDisplayName,
+  partyStateLabel,
   type BuyAlertRow,
+  type CongressAlertRow,
 } from './format';
 
 describe('abbreviatedUSD', () => {
@@ -93,5 +96,29 @@ describe('row-level formatters on realistic data', () => {
 
   it('rounds P/E to one decimal', () => {
     expect(peDisplay(row)).toBe('26.2');
+  });
+});
+
+describe('memberDisplayName', () => {
+  it('reformats efdsearch\'s "Last, First (Senator)" into "Sen. First Last"', () => {
+    const row = {member_name: 'Boozman, John (Senator)'} as CongressAlertRow;
+    expect(memberDisplayName(row)).toBe('Sen. John Boozman');
+  });
+
+  it('falls back to the raw string when the shape is unrecognized', () => {
+    const row = {member_name: 'something unexpected'} as CongressAlertRow;
+    expect(memberDisplayName(row)).toBe('something unexpected');
+  });
+});
+
+describe('partyStateLabel', () => {
+  it('formats party and state together', () => {
+    const row = {party: 'R', state: 'AR'} as CongressAlertRow;
+    expect(partyStateLabel(row)).toBe('(R-AR)');
+  });
+
+  it('is blank when party or state is missing (not yet enriched)', () => {
+    expect(partyStateLabel({party: null, state: 'AR'} as CongressAlertRow)).toBe('');
+    expect(partyStateLabel({party: 'R', state: null} as CongressAlertRow)).toBe('');
   });
 });

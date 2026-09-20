@@ -25,6 +25,17 @@ import Footer from '@components/Footer.astro';
         Loading alerts&hellip;
       </div>
       <div id="alertsList" class="mt-[16px] flex flex-col gap-y-[2px]"></div>
+
+      <h2 class="font-serif font-semibold text-h4 mt-[48px]">Congressional Buying</h2>
+      <p class="text-text-secondary text-h7 mt-[6px] max-w-[640px]">
+        Senate stock purchases (Periodic Transaction Reports), in the last 90
+        days. Amounts are disclosed as ranges, not exact dollars &mdash; that's
+        how the law requires them to be reported, not an estimate on our part.
+      </p>
+      <div id="congressStatus" class="text-text-muted text-h6 mt-[16px]">
+        Loading&hellip;
+      </div>
+      <div id="congressList" class="mt-[16px] flex flex-col gap-y-[2px]"></div>
     </div>
     <Footer />
   </div>
@@ -40,9 +51,17 @@ import Footer from '@components/Footer.astro';
     peDisplay,
     type BuyAlertRow,
   } from '@lib/insiderSignals';
+  import {
+    fetchCongressAlerts,
+    memberDisplayName,
+    partyStateLabel,
+    type CongressAlertRow,
+  } from '@lib/congressSignals';
 
   const statusEl = document.getElementById('alertsStatus')!;
   const listEl = document.getElementById('alertsList')!;
+  const congressStatusEl = document.getElementById('congressStatus')!;
+  const congressListEl = document.getElementById('congressList')!;
   const authAreaEl = document.getElementById('authArea')!;
 
   // --- Watchlist (sign-in gated) ---------------------------------------
@@ -77,6 +96,7 @@ import Footer from '@components/Footer.astro';
       watchlistTickers.add(ticker);
     }
     renderAlerts(currentAlerts);
+    renderCongressAlerts(currentCongressAlerts);
   }
 
   function renderAuthArea(userId: string | null) {
@@ -159,6 +179,64 @@ import Footer from '@components/Footer.astro';
     });
   }
 
+  // --- Congressional buying list ------------------------------------------
+  let currentCongressAlerts: CongressAlertRow[] = [];
+
+  function renderCongressAlerts(rows: CongressAlertRow[]) {
+    currentCongressAlerts = rows;
+    congressListEl.innerHTML = '';
+    if (rows.length === 0) {
+      congressStatusEl.textContent = 'No qualifying Senate purchases right now.';
+      return;
+    }
+    congressStatusEl.textContent = '';
+
+    for (const row of rows) {
+      const item = document.createElement('div');
+      item.className =
+        'py-[12px] border-b border-white/10 flex items-center justify-between gap-x-[12px]';
+
+      const isWatched = watchlistTickers.has(row.ticker);
+      const chamberBadge = row.chamber === 'senate' ? 'Senate' : row.chamber;
+      const partyState = partyStateLabel(row);
+
+      item.innerHTML = `
+        <div class="min-w-0">
+          <div class="flex items-baseline gap-x-[6px] flex-wrap">
+            <span class="font-semibold text-h6">${row.ticker}</span>
+            <span class="text-h8 font-semibold text-accent-blue">${chamberBadge}</span>
+          </div>
+          <div class="flex items-baseline gap-x-[6px] mt-[2px] flex-wrap">
+            <span class="text-text-secondary text-h7">${memberDisplayName(row)}${partyState ? ` ${partyState}` : ''} bought</span>
+            <span class="text-color-success text-h7 font-semibold">${row.amount_range}</span>
+            <span class="text-text-muted text-h8">${row.transaction_date}</span>
+          </div>
+        </div>
+        <button
+          data-ticker="${row.ticker}"
+          class="watch-btn shrink-0 h-[32px] px-[12px] text-h8 font-semibold rounded-[16px] border border-white/15 ${
+            isWatched ? 'text-color-success border-color-success/40' : 'text-text-secondary hover:bg-bg-secondary'
+          } transition-colors"
+        >${isWatched ? 'Watching' : '+ Watch'}</button>
+      `;
+      congressListEl.appendChild(item);
+    }
+
+    congressListEl.querySelectorAll<HTMLButtonElement>('.watch-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const {
+          data: {user},
+        } = await supabase.auth.getUser();
+        if (!user) {
+          renderAuthArea(null);
+          authAreaEl.querySelector('button')?.scrollIntoView({behavior: 'smooth'});
+          return;
+        }
+        await toggleWatch(btn.dataset.ticker!, user.id);
+      });
+    });
+  }
+
   async function init() {
     const {
       data: {session},
@@ -174,6 +252,7 @@ import Footer from '@components/Footer.astro';
         watchlistTickers = new Set();
       }
       renderAlerts(currentAlerts);
+      renderCongressAlerts(currentCongressAlerts);
     });
 
     try {
@@ -182,6 +261,14 @@ import Footer from '@components/Footer.astro';
     } catch (err) {
       console.error('failed to load buy alerts', err);
       statusEl.textContent = "Couldn't load alerts. Please try again shortly.";
+    }
+
+    try {
+      const rows = await fetchCongressAlerts();
+      renderCongressAlerts(rows);
+    } catch (err) {
+      console.error('failed to load congress alerts', err);
+      congressStatusEl.textContent = "Couldn't load Congressional data. Please try again shortly.";
     }
   }
 
