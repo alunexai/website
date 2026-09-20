@@ -1,0 +1,189 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Footer from '@components/Footer.astro';
+---
+
+<Layout title="Insider Trading Signals — Bill Leece">
+  <div class="min-h-screen bg-bg-primary text-color-main">
+    <div class="max-w-[900px] mx-auto px-[16px] pt-[24px] pb-[64px]">
+      <header class="flex items-center justify-between py-[16px]">
+        <a href="/" class="font-serif font-semibold text-h6 lg:text-h5 text-color-main"
+          >Bill Leece</a
+        >
+        <div id="authArea" class="flex items-center gap-x-[8px]"></div>
+      </header>
+
+      <h1 class="font-serif font-semibold text-h3 lg:text-h2 mt-[24px]">
+        Insider Trading Signals
+      </h1>
+      <p class="text-text-secondary text-h6 mt-[8px] max-w-[640px]">
+        Open-market insider buys (SEC Form 4, code "P") at US-listed companies, in
+        the last 90 days. Not investment advice &mdash; data from public SEC filings.
+      </p>
+
+      <div id="alertsStatus" class="text-text-muted text-h6 mt-[32px]">
+        Loading alerts&hellip;
+      </div>
+      <div id="alertsList" class="mt-[16px] flex flex-col gap-y-[2px]"></div>
+    </div>
+    <Footer />
+  </div>
+</Layout>
+
+<script>
+  import {supabase} from '@lib/supabase';
+  import {
+    fetchBuyAlerts,
+    officersLabel,
+    totalBuyDisplay,
+    marketCapDisplay,
+    peDisplay,
+    type BuyAlertRow,
+  } from '@lib/insiderSignals';
+
+  const statusEl = document.getElementById('alertsStatus')!;
+  const listEl = document.getElementById('alertsList')!;
+  const authAreaEl = document.getElementById('authArea')!;
+
+  // --- Watchlist (sign-in gated) ---------------------------------------
+  let watchlistTickers = new Set<string>();
+
+  async function loadWatchlist(userId: string) {
+    const {data, error} = await supabase
+      .from('watchlists')
+      .select('ticker')
+      .eq('user_id', userId);
+    if (error) {
+      console.error('watchlist load failed', error);
+      return;
+    }
+    watchlistTickers = new Set((data ?? []).map(r => r.ticker));
+  }
+
+  async function toggleWatch(ticker: string, userId: string) {
+    if (watchlistTickers.has(ticker)) {
+      const {error} = await supabase
+        .from('watchlists')
+        .delete()
+        .eq('user_id', userId)
+        .eq('ticker', ticker);
+      if (error) return console.error('watchlist remove failed', error);
+      watchlistTickers.delete(ticker);
+    } else {
+      const {error} = await supabase
+        .from('watchlists')
+        .insert({user_id: userId, ticker});
+      if (error) return console.error('watchlist add failed', error);
+      watchlistTickers.add(ticker);
+    }
+    renderAlerts(currentAlerts);
+  }
+
+  function renderAuthArea(userId: string | null) {
+    authAreaEl.innerHTML = '';
+    if (userId) {
+      const signOutBtn = document.createElement('button');
+      signOutBtn.textContent = 'Sign out';
+      signOutBtn.className =
+        'h-[36px] px-[12px] text-h7 font-semibold rounded-[16px] text-text-secondary hover:bg-bg-secondary transition-colors';
+      signOutBtn.addEventListener('click', () => supabase.auth.signOut());
+      authAreaEl.appendChild(signOutBtn);
+    } else {
+      const signInBtn = document.createElement('button');
+      signInBtn.textContent = 'Sign in with Google';
+      signInBtn.className =
+        'h-[36px] px-[12px] text-h7 font-bold rounded-[16px] text-white bg-gradient-to-br from-accent-blue to-accent-green hover:brightness-110 transition-[filter]';
+      signInBtn.addEventListener('click', () =>
+        supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {redirectTo: window.location.href},
+        })
+      );
+      authAreaEl.appendChild(signInBtn);
+    }
+  }
+
+  // --- Alerts list -------------------------------------------------------
+  let currentAlerts: BuyAlertRow[] = [];
+
+  function renderAlerts(rows: BuyAlertRow[]) {
+    currentAlerts = rows;
+    listEl.innerHTML = '';
+    if (rows.length === 0) {
+      statusEl.textContent = 'No qualifying insider buy alerts right now.';
+      return;
+    }
+    statusEl.textContent = '';
+
+    for (const row of rows) {
+      const item = document.createElement('div');
+      item.className =
+        'py-[12px] border-b border-white/10 flex items-center justify-between gap-x-[12px]';
+
+      const isWatched = watchlistTickers.has(row.ticker);
+
+      item.innerHTML = `
+        <div class="min-w-0">
+          <div class="flex items-baseline gap-x-[6px] flex-wrap">
+            <span class="font-semibold text-h6">${row.ticker}</span>
+            <span class="text-text-muted text-h8">${marketCapDisplay(row)} market cap &middot; P/E ${peDisplay(row)}</span>
+          </div>
+          <div class="flex items-baseline gap-x-[6px] mt-[2px] flex-wrap">
+            <span class="text-text-secondary text-h7">${officersLabel(row)} bought</span>
+            <span class="text-color-success text-h7 font-semibold">${totalBuyDisplay(row)}</span>
+            <span class="text-text-muted text-h8">${row.latest_buy}</span>
+          </div>
+        </div>
+        <button
+          data-ticker="${row.ticker}"
+          class="watch-btn shrink-0 h-[32px] px-[12px] text-h8 font-semibold rounded-[16px] border border-white/15 ${
+            isWatched ? 'text-color-success border-color-success/40' : 'text-text-secondary hover:bg-bg-secondary'
+          } transition-colors"
+        >${isWatched ? 'Watching' : '+ Watch'}</button>
+      `;
+      listEl.appendChild(item);
+    }
+
+    listEl.querySelectorAll<HTMLButtonElement>('.watch-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const {
+          data: {user},
+        } = await supabase.auth.getUser();
+        if (!user) {
+          renderAuthArea(null);
+          authAreaEl.querySelector('button')?.scrollIntoView({behavior: 'smooth'});
+          return;
+        }
+        await toggleWatch(btn.dataset.ticker!, user.id);
+      });
+    });
+  }
+
+  async function init() {
+    const {
+      data: {session},
+    } = await supabase.auth.getSession();
+    renderAuthArea(session?.user.id ?? null);
+    if (session?.user) await loadWatchlist(session.user.id);
+
+    supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      renderAuthArea(newSession?.user.id ?? null);
+      if (newSession?.user) {
+        await loadWatchlist(newSession.user.id);
+      } else {
+        watchlistTickers = new Set();
+      }
+      renderAlerts(currentAlerts);
+    });
+
+    try {
+      const rows = await fetchBuyAlerts();
+      renderAlerts(rows);
+    } catch (err) {
+      console.error('failed to load buy alerts', err);
+      statusEl.textContent = "Couldn't load alerts. Please try again shortly.";
+    }
+  }
+
+  init();
+</script>

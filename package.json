@@ -8,6 +8,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "vitest run",
     "astro": "astro",
     "preinstall": "npx only-allow pnpm"
   },
@@ -15,6 +16,7 @@
     "@astrojs/check": "^0.9.10",
     "@astrojs/tailwind": "^6.0.2",
     "@astrojs/ts-plugin": "^1.10.12",
+    "@supabase/supabase-js": "^2.116.0",
     "astro": "^7.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.4"
@@ -23,7 +25,8 @@
     "@types/node": "^20.11.17",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
-    "sharp": "^0.35.0"
+    "sharp": "^0.35.0",
+    "vitest": "^5.0.1"
   },
   "engines": {
     "node": ">=22.12.0",
