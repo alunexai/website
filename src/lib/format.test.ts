@@ -5,6 +5,7 @@ import {
   totalBuyDisplay,
   marketCapDisplay,
   peDisplay,
+  congressPeDisplay,
   memberDisplayName,
   partyStateLabel,
   groupConvergenceAlerts,
@@ -98,6 +99,33 @@ describe('row-level formatters on realistic data', () => {
 
   it('rounds P/E to one decimal', () => {
     expect(peDisplay(row)).toBe('26.2');
+  });
+});
+
+describe('marketCapDisplay on a Congressional row', () => {
+  it('works the same way it does for a corporate row (shared formatter)', () => {
+    const row = {market_cap_musd: 26_083} as CongressAlertRow;
+    expect(marketCapDisplay(row)).toBe('$26.1B');
+  });
+
+  it('renders an em dash before the row has been enriched', () => {
+    const row = {market_cap_musd: null} as CongressAlertRow;
+    expect(marketCapDisplay(row)).toBe('—');
+  });
+});
+
+describe('congressPeDisplay', () => {
+  it('rounds pe_ratio to one decimal, distinct from BuyAlertRow\'s min_pe', () => {
+    const row = {pe_ratio: 17.2055} as CongressAlertRow;
+    expect(congressPeDisplay(row)).toBe('17.2');
+  });
+
+  it('renders an em dash when null (not yet enriched, or no Finnhub data e.g. an ETF)', () => {
+    expect(congressPeDisplay({pe_ratio: null} as CongressAlertRow)).toBe('—');
+  });
+
+  it('treats 0 as a present value, not null', () => {
+    expect(congressPeDisplay({pe_ratio: 0} as CongressAlertRow)).toBe('0.0');
   });
 });
 

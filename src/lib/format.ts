@@ -46,13 +46,24 @@ export function totalBuyDisplay(row: BuyAlertRow): string {
   return row.total_buy_usd == null ? '—' : abbreviatedUSD(row.total_buy_usd);
 }
 
-// market_cap_musd is in millions USD; render as "$72.8B".
-export function marketCapDisplay(row: BuyAlertRow): string {
+// market_cap_musd is in millions USD; render as "$72.8B". Shared by corporate
+// and Congressional rows (both carry the same field, same units, same
+// point-in-time-at-detection semantics — insider-trading-app DESIGN §3.5) --
+// takes just the field it needs so one function serves both row shapes.
+export function marketCapDisplay(row: {market_cap_musd: number | null}): string {
   return row.market_cap_musd == null ? '—' : abbreviatedUSD(row.market_cap_musd * 1_000_000);
 }
 
-export function peDisplay(row: BuyAlertRow): string {
-  return row.min_pe == null ? '—' : row.min_pe.toFixed(1);
+function formatPe(pe: number | null): string {
+  return pe == null ? '—' : pe.toFixed(1);
+}
+
+// BuyAlertRow's min_pe is an aggregate (lowest P/E across the ticker's
+// clustered officer buys, buy_alerts_v1); CongressAlertRow's pe_ratio (below)
+// is a single per-transaction value -- genuinely different fields, not a
+// naming inconsistency, hence the two thin wrappers over one formatter.
+export function peDisplay(row: Pick<BuyAlertRow, 'min_pe'>): string {
+  return formatPe(row.min_pe);
 }
 
 // Mirrors insider-trading-app's congress_buy_alerts_v1 view (DESIGN §3.8b/c).
@@ -68,6 +79,13 @@ export type CongressAlertRow = {
   amount_range: string;
   transaction_date: string; // date, e.g. "2026-08-27"
   filed_date: string | null;
+  // Same point-in-time-at-detection company snapshot the corporate rows show
+  // (Finnhub via enrich-signals, insider-trading-app DESIGN §3.5) -- added for
+  // UX parity between the two feeds. Null for a ticker Finnhub has no
+  // fundamentals for (e.g. an ETF, which shouldn't reach this view anyway
+  // per §3.8d, but nulls are tolerated rather than assumed impossible).
+  market_cap_musd: number | null;
+  pe_ratio: number | null;
 };
 
 /// "Boozman, John (Senator)" -> "Sen. John Boozman". Falls back to the raw
@@ -87,6 +105,10 @@ export function memberDisplayName(row: Pick<CongressAlertRow, 'member_name'>): s
 export function partyStateLabel(row: Pick<CongressAlertRow, 'party' | 'state'>): string {
   if (!row.party || !row.state) return '';
   return `(${row.party}-${row.state})`;
+}
+
+export function congressPeDisplay(row: Pick<CongressAlertRow, 'pe_ratio'>): string {
+  return formatPe(row.pe_ratio);
 }
 
 // Mirrors insider-trading-app's convergence_alerts_v1 view (DESIGN §3.8e): a
