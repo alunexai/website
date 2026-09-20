@@ -1,0 +1,118 @@
+---
+import Layout from '@layouts/Layout.astro';
+import Footer from '@components/Footer.astro';
+---
+
+<Layout title="Privacy Policy — Bill Leece">
+  <div class="min-h-screen bg-bg-primary text-color-main">
+    <div class="max-w-[720px] mx-auto px-[16px] pt-[24px] pb-[64px]">
+      <header class="flex items-center justify-between py-[16px]">
+        <a href="/" class="font-serif font-semibold text-h6 lg:text-h5 text-color-main"
+          >Bill Leece</a
+        >
+      </header>
+
+      <h1 class="font-serif font-semibold text-h3 lg:text-h2 mt-[24px]">Privacy Policy</h1>
+      <p class="text-text-muted text-h7 mt-[8px]">Last updated: September 20, 2026</p>
+
+      <div class="mt-[32px] flex flex-col gap-y-[28px]">
+        <section>
+          <p class="text-text-secondary text-h6 leading-relaxed">
+            This policy covers alunex.ai, including the Insider Trading Signals tool at
+            <a href="/insider-trading-signals" class="text-accent-blue underline">/insider-trading-signals</a>.
+            It's a personal site and a free tool, not a company with a data business, so
+            this is written in plain terms rather than dense legal language &mdash; if
+            anything here is unclear, email me (below) and ask.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Information I collect</h2>
+          <div class="mt-[10px] flex flex-col gap-y-[10px]">
+            <p class="text-text-secondary text-h6 leading-relaxed">
+              <strong class="text-color-main">Site analytics (all visitors).</strong>
+              This site uses Google Tag Manager to understand basic usage &mdash; which
+              pages get visited, roughly how, and from where. This is aggregate traffic
+              data, not tied to your name or account.
+            </p>
+            <p class="text-text-secondary text-h6 leading-relaxed">
+              <strong class="text-color-main">Account information (only if you sign in).</strong>
+              Insider Trading Signals offers optional "Sign in with Google" to save a
+              watchlist. If you sign in, I receive your name and email address from
+              Google &mdash; nothing else from your Google account.
+            </p>
+            <p class="text-text-secondary text-h6 leading-relaxed">
+              <strong class="text-color-main">Watchlist data.</strong> If you're signed in
+              and add a stock ticker to your watchlist, that ticker is stored and tied to
+              your account so it's there next time you visit.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">How it's used</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            To run the site and the watchlist feature, and to understand which parts of
+            the site are actually useful. I don't use anything collected here for
+            advertising, and I don't sell it to anyone.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Where it's stored, and who else sees it</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            Account and watchlist data is stored with Supabase, the backend provider for
+            this tool. Sign-in identity comes from Google. Neither Supabase nor Google
+            gets used for anything beyond running this site &mdash; I'm not sharing your
+            data with additional third parties, and I'm not selling it. Google's and
+            Supabase's own privacy policies govern how they each handle data on their
+            side.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Cookies</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            A small cookie keeps you signed in between visits if you use Google
+            sign-in. Google Tag Manager also sets standard analytics cookies. Neither is
+            used to track you across other websites.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Your choices</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            You can sign out at any time from the top of the Insider Trading Signals page.
+            To have your account and watchlist data deleted entirely, email me (below) and
+            I'll remove it. You can also control cookies and tracking through your
+            browser's own privacy settings.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Children's privacy</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            This site isn't directed at children under 13, and I don't knowingly collect
+            information from them.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Changes to this policy</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            If this changes, I'll update this page and the date at the top.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif font-semibold text-h5">Contact</h2>
+          <p class="mt-[10px] text-text-secondary text-h6 leading-relaxed">
+            Questions, or want your data deleted? Email
+            <a href="mailto:bill@alunex.ai" class="text-accent-blue underline">bill@alunex.ai</a>.
+          </p>
+        </section>
+      </div>
+    </div>
+    <Footer />
+  </div>
+</Layout>
