@@ -8,6 +8,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "vitest run",
     "astro": "astro",
     "preinstall": "npx only-allow pnpm"
   },
@@ -24,7 +25,8 @@
     "@types/node": "^20.11.17",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
-    "sharp": "^0.35.0"
+    "sharp": "^0.35.0",
+    "vitest": "^5.0.1"
   },
   "engines": {
     "node": ">=22.12.0",

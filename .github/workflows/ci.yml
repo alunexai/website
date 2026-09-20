@@ -17,6 +17,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm test
       - run: pnpm build
         env:
           # Supabase publishable key — safe to expose (RLS, not key secrecy,
