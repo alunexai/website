@@ -1,5 +1,11 @@
 import {supabase} from '@lib/supabase';
-export {memberDisplayName, partyStateLabel, type CongressAlertRow} from './format';
+export {
+  memberDisplayName,
+  partyStateLabel,
+  marketCapDisplay,
+  congressPeDisplay,
+  type CongressAlertRow,
+} from './format';
 import type {CongressAlertRow} from './format';
 
 // congress_buy_alerts_v1 isn't anon-readable (same posture as buy_alerts_v1,

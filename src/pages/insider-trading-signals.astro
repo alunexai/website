@@ -96,6 +96,7 @@ import Footer from '@components/Footer.astro';
     fetchCongressAlerts,
     memberDisplayName,
     partyStateLabel,
+    congressPeDisplay,
     type CongressAlertRow,
   } from '@lib/congressSignals';
   import {
@@ -254,12 +255,20 @@ import Footer from '@components/Footer.astro';
       const isWatched = watchlistTickers.has(row.ticker);
       const chamberBadge = row.chamber === 'senate' ? 'Senate' : row.chamber;
       const partyState = partyStateLabel(row);
+      // Same point-in-time Finnhub snapshot the corporate rows show (DESIGN
+      // §3.5); omit entirely rather than show "— market cap · P/E —" when a
+      // ticker hasn't been enriched yet or Finnhub has no fundamentals for it.
+      const capInfo =
+        row.market_cap_musd != null || row.pe_ratio != null
+          ? `<span class="text-text-muted text-h8">${marketCapDisplay(row)} market cap &middot; P/E ${congressPeDisplay(row)}</span>`
+          : '';
 
       item.innerHTML = `
         <div class="min-w-0">
           <div class="flex items-baseline gap-x-[6px] flex-wrap">
             <span class="font-semibold text-h6">${row.ticker}</span>
             <span class="text-h8 font-semibold text-accent-blue">${chamberBadge}</span>
+            ${capInfo}
           </div>
           <div class="flex items-baseline gap-x-[6px] mt-[2px] flex-wrap">
             <span class="text-text-secondary text-h7">${memberDisplayName(row)}${partyState ? ` ${partyState}` : ''} bought</span>
