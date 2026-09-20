@@ -21,7 +21,22 @@ import Footer from '@components/Footer.astro';
         the last 90 days. Not investment advice &mdash; data from public SEC filings.
       </p>
 
-      <div id="alertsStatus" class="text-text-muted text-h6 mt-[32px]">
+      <!-- Hidden by default; shown only when a ticker actually converges (the
+           actual thesis of the page, DESIGN §1, §3.8e) -- an always-visible
+           empty section would just be noise on an ordinary day. -->
+      <div id="convergenceSection" class="hidden mt-[40px]">
+        <h2 class="font-serif font-semibold text-h4 flex items-center gap-x-[8px]">
+          <span class="text-color-success">&#9670;</span> Convergence
+        </h2>
+        <p class="text-text-secondary text-h7 mt-[6px] max-w-[640px]">
+          A corporate insider <em>and</em> a member of Congress both bought the same
+          stock in the last 90 days &mdash; the strongest signal this page tracks.
+        </p>
+        <div id="convergenceList" class="mt-[16px] flex flex-col gap-y-[12px]"></div>
+      </div>
+
+      <h2 class="font-serif font-semibold text-h4 mt-[40px]">Insider Buying</h2>
+      <div id="alertsStatus" class="text-text-muted text-h6 mt-[16px]">
         Loading alerts&hellip;
       </div>
       <div id="alertsList" class="mt-[16px] flex flex-col gap-y-[2px]"></div>
@@ -57,11 +72,19 @@ import Footer from '@components/Footer.astro';
     partyStateLabel,
     type CongressAlertRow,
   } from '@lib/congressSignals';
+  import {
+    fetchConvergenceAlerts,
+    groupConvergenceAlerts,
+    type ConvergenceCard,
+  } from '@lib/convergenceSignals';
+  import {abbreviatedUSD} from '@lib/format';
 
   const statusEl = document.getElementById('alertsStatus')!;
   const listEl = document.getElementById('alertsList')!;
   const congressStatusEl = document.getElementById('congressStatus')!;
   const congressListEl = document.getElementById('congressList')!;
+  const convergenceSectionEl = document.getElementById('convergenceSection')!;
+  const convergenceListEl = document.getElementById('convergenceList')!;
   const authAreaEl = document.getElementById('authArea')!;
 
   // --- Watchlist (sign-in gated) ---------------------------------------
@@ -97,6 +120,7 @@ import Footer from '@components/Footer.astro';
     }
     renderAlerts(currentAlerts);
     renderCongressAlerts(currentCongressAlerts);
+    renderConvergenceAlerts(currentConvergenceCards);
   }
 
   function renderAuthArea(userId: string | null) {
@@ -237,6 +261,81 @@ import Footer from '@components/Footer.astro';
     });
   }
 
+  // --- Convergence (the headline signal) ----------------------------------
+  let currentConvergenceCards: ConvergenceCard[] = [];
+
+  function renderConvergenceAlerts(cards: ConvergenceCard[]) {
+    currentConvergenceCards = cards;
+    convergenceListEl.innerHTML = '';
+    if (cards.length === 0) {
+      convergenceSectionEl.classList.add('hidden');
+      return;
+    }
+    convergenceSectionEl.classList.remove('hidden');
+
+    for (const card of cards) {
+      const item = document.createElement('div');
+      item.className =
+        'rounded-[16px] border border-color-success/40 bg-color-success/5 p-[14px]';
+
+      const isWatched = watchlistTickers.has(card.ticker);
+      const totalBuyDisplay =
+        card.total_buy_usd == null ? '—' : abbreviatedUSD(card.total_buy_usd);
+      const membersHtml = card.members
+        .map(m => {
+          const label = memberDisplayName(m);
+          const partyState = partyStateLabel(m);
+          return `
+            <div class="flex items-baseline gap-x-[6px] mt-[4px] flex-wrap">
+              <span class="text-text-secondary text-h7">${label}${partyState ? ` ${partyState}` : ''} bought</span>
+              <span class="text-color-success text-h7 font-semibold">${m.amount_range}</span>
+              <span class="text-h8 font-semibold text-accent-blue">${m.chamber === 'senate' ? 'Senate' : m.chamber}</span>
+              <span class="text-text-muted text-h8">${m.transaction_date}</span>
+            </div>
+          `;
+        })
+        .join('');
+
+      item.innerHTML = `
+        <div class="flex items-start justify-between gap-x-[12px]">
+          <div class="min-w-0">
+            <div class="flex items-baseline gap-x-[6px] flex-wrap">
+              <span class="font-semibold text-h6">${card.ticker}</span>
+              <span class="text-h8 font-bold text-color-success uppercase tracking-wide">Converged</span>
+            </div>
+            <div class="flex items-baseline gap-x-[6px] mt-[4px] flex-wrap">
+              <span class="text-text-secondary text-h7">${officersLabel(card)} bought</span>
+              <span class="text-color-success text-h7 font-semibold">${totalBuyDisplay}</span>
+              <span class="text-text-muted text-h8">${card.corporate_latest_buy}</span>
+            </div>
+            ${membersHtml}
+          </div>
+          <button
+            data-ticker="${card.ticker}"
+            class="watch-btn shrink-0 h-[32px] px-[12px] text-h8 font-semibold rounded-[16px] border border-white/15 ${
+              isWatched ? 'text-color-success border-color-success/40' : 'text-text-secondary hover:bg-bg-secondary'
+            } transition-colors"
+          >${isWatched ? 'Watching' : '+ Watch'}</button>
+        </div>
+      `;
+      convergenceListEl.appendChild(item);
+    }
+
+    convergenceListEl.querySelectorAll<HTMLButtonElement>('.watch-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const {
+          data: {user},
+        } = await supabase.auth.getUser();
+        if (!user) {
+          renderAuthArea(null);
+          authAreaEl.querySelector('button')?.scrollIntoView({behavior: 'smooth'});
+          return;
+        }
+        await toggleWatch(btn.dataset.ticker!, user.id);
+      });
+    });
+  }
+
   async function init() {
     const {
       data: {session},
@@ -253,6 +352,7 @@ import Footer from '@components/Footer.astro';
       }
       renderAlerts(currentAlerts);
       renderCongressAlerts(currentCongressAlerts);
+      renderConvergenceAlerts(currentConvergenceCards);
     });
 
     try {
@@ -269,6 +369,16 @@ import Footer from '@components/Footer.astro';
     } catch (err) {
       console.error('failed to load congress alerts', err);
       congressStatusEl.textContent = "Couldn't load Congressional data. Please try again shortly.";
+    }
+
+    try {
+      const rows = await fetchConvergenceAlerts();
+      renderConvergenceAlerts(groupConvergenceAlerts(rows));
+    } catch (err) {
+      // Fails silently (no status element) -- the section is hidden by
+      // default anyway, so a load failure here just means it stays hidden,
+      // same as "no convergence today" rather than surfacing as an error.
+      console.error('failed to load convergence alerts', err);
     }
   }
 
