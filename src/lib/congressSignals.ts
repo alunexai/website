@@ -4,6 +4,7 @@ export {
   partyStateLabel,
   marketCapDisplay,
   congressPeDisplay,
+  hedgeFundBadge,
   type CongressAlertRow,
 } from './format';
 import type {CongressAlertRow} from './format';
