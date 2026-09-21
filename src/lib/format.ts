@@ -13,6 +13,13 @@ export type BuyAlertRow = {
   avg_pct_of_holdings: number | null;
   min_pe: number | null;
   latest_buy: string; // date, e.g. "2026-09-18"
+  // Hedge-fund 13F conviction weight (insider-trading-app DESIGN §3.9) -- a
+  // boost on this row, never a filter. Both null when no tracked fund (of 5
+  // curated) added/increased this ticker within the 180-day lookback; that's
+  // the common case, not an error condition. hedge_fund_names is comma-joined
+  // when more than one fund matches.
+  hedge_fund_names: string | null;
+  hedge_fund_latest_period: string | null; // quarter-end date, e.g. "2026-06-30"
 };
 
 /// Abbreviate a USD amount: 1234 -> "$1.2K", 7.28e10 -> "$72.8B". One decimal,
@@ -86,6 +93,8 @@ export type CongressAlertRow = {
   // per §3.8d, but nulls are tolerated rather than assumed impossible).
   market_cap_musd: number | null;
   pe_ratio: number | null;
+  hedge_fund_names: string | null;
+  hedge_fund_latest_period: string | null;
 };
 
 /// "Boozman, John (Senator)" -> "Sen. John Boozman". Falls back to the raw
@@ -111,6 +120,26 @@ export function congressPeDisplay(row: Pick<CongressAlertRow, 'pe_ratio'>): stri
   return formatPe(row.pe_ratio);
 }
 
+// "2026-06-30" -> "Q2 2026". 13F periods are always quarter-end dates (03-31,
+// 06-30, 09-30, 12-31), so the month alone determines the quarter.
+function quarterLabel(periodOfReport: string): string {
+  const [year, month] = periodOfReport.split('-');
+  const quarter = Math.ceil(Number(month) / 3);
+  return `Q${quarter} ${year}`;
+}
+
+// Shared by BuyAlertRow, CongressAlertRow, and ConvergenceCard -- all three
+// carry the same two hedge-fund fields (DESIGN §3.9). Returns '' (not a
+// placeholder like "—") when there's no match, since the caller should omit
+// the badge entirely rather than render an empty one -- absence here is
+// uninformative, never a bearish signal, so it shouldn't visually read as one.
+export function hedgeFundBadge(
+  row: {hedge_fund_names: string | null; hedge_fund_latest_period: string | null},
+): string {
+  if (!row.hedge_fund_names || !row.hedge_fund_latest_period) return '';
+  return `${row.hedge_fund_names} · ${quarterLabel(row.hedge_fund_latest_period)}`;
+}
+
 // Mirrors insider-trading-app's convergence_alerts_v1 view (DESIGN §3.8e): a
 // ticker with both a qualifying corporate buy and a qualifying Congressional
 // buy. One row per (ticker, Congressional transaction) -- a ticker with two
@@ -122,6 +151,8 @@ export type ConvergenceAlertRow = {
   market_cap_musd: number | null;
   min_pe: number | null;
   corporate_latest_buy: string;
+  hedge_fund_names: string | null;
+  hedge_fund_latest_period: string | null;
   member_name: string;
   state: string | null;
   party: string | null;
@@ -137,6 +168,8 @@ export type ConvergenceCard = {
   market_cap_musd: number | null;
   min_pe: number | null;
   corporate_latest_buy: string;
+  hedge_fund_names: string | null;
+  hedge_fund_latest_period: string | null;
   members: Array<{
     member_name: string;
     state: string | null;
@@ -161,6 +194,8 @@ export function groupConvergenceAlerts(rows: ConvergenceAlertRow[]): Convergence
         market_cap_musd: r.market_cap_musd,
         min_pe: r.min_pe,
         corporate_latest_buy: r.corporate_latest_buy,
+        hedge_fund_names: r.hedge_fund_names,
+        hedge_fund_latest_period: r.hedge_fund_latest_period,
         members: [],
       };
       byTicker.set(r.ticker, card);

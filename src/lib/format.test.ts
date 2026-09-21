@@ -6,6 +6,7 @@ import {
   marketCapDisplay,
   peDisplay,
   congressPeDisplay,
+  hedgeFundBadge,
   memberDisplayName,
   partyStateLabel,
   groupConvergenceAlerts,
@@ -129,6 +130,46 @@ describe('congressPeDisplay', () => {
   });
 });
 
+describe('hedgeFundBadge', () => {
+  it('is blank when there is no tracked-fund match (the common case)', () => {
+    const row = {hedge_fund_names: null, hedge_fund_latest_period: null} as BuyAlertRow;
+    expect(hedgeFundBadge(row)).toBe('');
+  });
+
+  it('formats a single fund with its quarter', () => {
+    const row = {
+      hedge_fund_names: 'ValueAct',
+      hedge_fund_latest_period: '2026-06-30',
+    } as BuyAlertRow;
+    expect(hedgeFundBadge(row)).toBe('ValueAct · Q2 2026');
+  });
+
+  it('passes a comma-joined multi-fund match through as-is', () => {
+    const row = {
+      hedge_fund_names: 'ValueAct, Appaloosa',
+      hedge_fund_latest_period: '2026-06-30',
+    } as BuyAlertRow;
+    expect(hedgeFundBadge(row)).toBe('ValueAct, Appaloosa · Q2 2026');
+  });
+
+  it('maps every quarter-end month to the right quarter', () => {
+    const badge = (period: string) =>
+      hedgeFundBadge({hedge_fund_names: 'X', hedge_fund_latest_period: period} as BuyAlertRow);
+    expect(badge('2026-03-31')).toBe('X · Q1 2026');
+    expect(badge('2026-06-30')).toBe('X · Q2 2026');
+    expect(badge('2026-09-30')).toBe('X · Q3 2026');
+    expect(badge('2025-12-31')).toBe('X · Q4 2025');
+  });
+
+  it('works identically on a CongressAlertRow (shared formatter)', () => {
+    const row = {
+      hedge_fund_names: 'Baupost',
+      hedge_fund_latest_period: '2026-06-30',
+    } as CongressAlertRow;
+    expect(hedgeFundBadge(row)).toBe('Baupost · Q2 2026');
+  });
+});
+
 describe('memberDisplayName', () => {
   it('reformats efdsearch\'s "Last, First (Senator)" into "Sen. First Last"', () => {
     const row = {member_name: 'Boozman, John (Senator)'} as CongressAlertRow;
@@ -161,6 +202,8 @@ describe('groupConvergenceAlerts', () => {
     market_cap_musd: 65_000,
     min_pe: 120,
     corporate_latest_buy: '2026-09-10',
+    hedge_fund_names: null,
+    hedge_fund_latest_period: null,
     member_name: 'Okafor, Rosa (Senator)',
     state: 'TX',
     party: 'R',
@@ -176,6 +219,14 @@ describe('groupConvergenceAlerts', () => {
     expect(cards[0].ticker).toBe('PLTR');
     expect(cards[0].distinct_officers).toBe(4);
     expect(cards[0].total_buy_usd).toBe(2_100_000);
+  });
+
+  it('carries the hedge-fund overlap fields through to the card', () => {
+    const cards = groupConvergenceAlerts([
+      row({hedge_fund_names: 'ValueAct', hedge_fund_latest_period: '2026-06-30'}),
+    ]);
+    expect(cards[0].hedge_fund_names).toBe('ValueAct');
+    expect(hedgeFundBadge(cards[0])).toBe('ValueAct · Q2 2026');
   });
 
   it('groups multiple Congressional buyers on the same ticker into one card', () => {

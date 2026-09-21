@@ -35,6 +35,10 @@ const config: Config = {
       'accent-blue': '#3890C2',
       'accent-cyan': '#2CBDDA',
       'accent-green': '#22A06B',
+      // Hedge-fund conviction badge (insider-trading-app DESIGN §3.9) -- amber,
+      // distinct from Senate's accent-blue and buy amounts' color-success, matching
+      // the design artifact's chosen tone for this signal.
+      'accent-amber': '#E3B25C',
       'text-secondary': '#AEB8C0',
       'text-muted': '#76828B',
     },
