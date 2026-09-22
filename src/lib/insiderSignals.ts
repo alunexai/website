@@ -1,5 +1,5 @@
 import {supabase} from '@lib/supabase';
-export {abbreviatedUSD, officersLabel, totalBuyDisplay, marketCapDisplay, peDisplay, hedgeFundBadge, type BuyAlertRow} from './format';
+export {abbreviatedUSD, officersLabel, totalBuyDisplay, marketCapDisplay, peDisplay, fundBuyingLine, type BuyAlertRow} from './format';
 import type {BuyAlertRow} from './format';
 
 // buy_alerts_v1 itself isn't anon-readable (insider-trading-app DESIGN §3.8a) —

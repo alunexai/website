@@ -29,10 +29,15 @@ import Footer from '@components/Footer.astro';
           Form 4s, Senate disclosures), and flags the rare cases where they converge on
           the same stock.
         </p>
+        <p class="text-text-secondary text-h8 leading-relaxed mt-[8px]">
+          Some rows also show <span class="text-accent-amber">Fund buying</span> &mdash; one
+          of five hedge funds I track opened or grew a position in that stock. Funds only
+          report their holdings once a quarter, so that one is a snapshot that can be a few
+          months old, not a live trade.
+        </p>
         <p class="text-text-muted text-h8 leading-relaxed mt-[8px]">
-          Next up: House disclosures, hedge fund 13F filings, and news context to help
-          rank signals. I'm tracking a real position against the S&amp;P 500 to see if it
-          actually works.
+          Next up: House disclosures and news context to help rank signals. I'm tracking a
+          real position against the S&amp;P 500 to see if it actually works.
         </p>
       </div>
 
@@ -90,7 +95,7 @@ import Footer from '@components/Footer.astro';
     totalBuyDisplay,
     marketCapDisplay,
     peDisplay,
-    hedgeFundBadge,
+    fundBuyingLine,
     type BuyAlertRow,
   } from '@lib/insiderSignals';
   import {
@@ -198,13 +203,12 @@ import Footer from '@components/Footer.astro';
         'py-[12px] border-b border-white/10 flex items-center justify-between gap-x-[12px]';
 
       const isWatched = watchlistTickers.has(row.ticker);
-      const fundBadge = hedgeFundBadge(row);
+      const fundLine = fundBuyingLine(row);
 
       item.innerHTML = `
         <div class="min-w-0">
           <div class="flex items-baseline gap-x-[6px] flex-wrap">
             <span class="font-semibold text-h6">${row.ticker}</span>
-            ${fundBadge ? `<span class="text-h8 font-semibold text-accent-amber">${fundBadge}</span>` : ''}
             <span class="text-text-muted text-h8">${marketCapDisplay(row)} market cap &middot; P/E ${peDisplay(row)}</span>
           </div>
           <div class="flex items-baseline gap-x-[6px] mt-[2px] flex-wrap">
@@ -212,6 +216,7 @@ import Footer from '@components/Footer.astro';
             <span class="text-color-success text-h7 font-semibold">${totalBuyDisplay(row)}</span>
             <span class="text-text-muted text-h8">${row.latest_buy}</span>
           </div>
+          ${fundLine ? `<div class="text-h8 text-accent-amber mt-[3px]">&#9671; ${fundLine}</div>` : ''}
         </div>
         <button
           data-ticker="${row.ticker}"
@@ -265,14 +270,13 @@ import Footer from '@components/Footer.astro';
         row.market_cap_musd != null || row.pe_ratio != null
           ? `<span class="text-text-muted text-h8">${marketCapDisplay(row)} market cap &middot; P/E ${congressPeDisplay(row)}</span>`
           : '';
-      const fundBadge = hedgeFundBadge(row);
+      const fundLine = fundBuyingLine(row);
 
       item.innerHTML = `
         <div class="min-w-0">
           <div class="flex items-baseline gap-x-[6px] flex-wrap">
             <span class="font-semibold text-h6">${row.ticker}</span>
             <span class="text-h8 font-semibold text-accent-blue">${chamberBadge}</span>
-            ${fundBadge ? `<span class="text-h8 font-semibold text-accent-amber">${fundBadge}</span>` : ''}
             ${capInfo}
           </div>
           <div class="flex items-baseline gap-x-[6px] mt-[2px] flex-wrap">
@@ -280,6 +284,7 @@ import Footer from '@components/Footer.astro';
             <span class="text-color-success text-h7 font-semibold">${row.amount_range}</span>
             <span class="text-text-muted text-h8">${row.transaction_date}</span>
           </div>
+          ${fundLine ? `<div class="text-h8 text-accent-amber mt-[3px]">&#9671; ${fundLine}</div>` : ''}
         </div>
         <button
           data-ticker="${row.ticker}"
@@ -326,7 +331,7 @@ import Footer from '@components/Footer.astro';
       const isWatched = watchlistTickers.has(card.ticker);
       const totalBuyDisplay =
         card.total_buy_usd == null ? '—' : abbreviatedUSD(card.total_buy_usd);
-      const fundBadge = hedgeFundBadge(card);
+      const fundLine = fundBuyingLine(card);
       const membersHtml = card.members
         .map(m => {
           const label = memberDisplayName(m);
@@ -348,7 +353,6 @@ import Footer from '@components/Footer.astro';
             <div class="flex items-baseline gap-x-[6px] flex-wrap">
               <span class="font-semibold text-h6">${card.ticker}</span>
               <span class="text-h8 font-bold text-color-success uppercase tracking-wide">Converged</span>
-              ${fundBadge ? `<span class="text-h8 font-semibold text-accent-amber">${fundBadge}</span>` : ''}
             </div>
             <div class="flex items-baseline gap-x-[6px] mt-[4px] flex-wrap">
               <span class="text-text-secondary text-h7">${officersLabel(card)} bought</span>
@@ -356,6 +360,7 @@ import Footer from '@components/Footer.astro';
               <span class="text-text-muted text-h8">${card.corporate_latest_buy}</span>
             </div>
             ${membersHtml}
+            ${fundLine ? `<div class="text-h8 text-accent-amber mt-[4px]">&#9671; ${fundLine}</div>` : ''}
           </div>
           <button
             data-ticker="${card.ticker}"
