@@ -6,7 +6,7 @@ import {
   marketCapDisplay,
   peDisplay,
   congressPeDisplay,
-  hedgeFundBadge,
+  fundBuyingLine,
   memberDisplayName,
   partyStateLabel,
   groupConvergenceAlerts,
@@ -130,43 +130,109 @@ describe('congressPeDisplay', () => {
   });
 });
 
-describe('hedgeFundBadge', () => {
+describe('fundBuyingLine', () => {
+  const row = (o: Record<string, unknown>) => ({
+    hedge_fund_names: null,
+    hedge_fund_short_names: null,
+    hedge_fund_action: null,
+    hedge_fund_latest_period: null,
+    ...o,
+  }) as unknown as BuyAlertRow;
+
   it('is blank when there is no tracked-fund match (the common case)', () => {
-    const row = {hedge_fund_names: null, hedge_fund_latest_period: null} as BuyAlertRow;
-    expect(hedgeFundBadge(row)).toBe('');
+    // Absence is uninformative -- most tickers have no match -- so the caller
+    // omits the line entirely rather than rendering an empty placeholder that
+    // would read as a negative.
+    expect(fundBuyingLine(row({}))).toBe('');
   });
 
-  it('formats a single fund with its quarter', () => {
-    const row = {
-      hedge_fund_names: 'ValueAct',
+  it('leads with the category, names the fund, and says what it did', () => {
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'ValueAct',
+      hedge_fund_action: 'new',
+      hedge_fund_latest_period: '2026-03-31',
+    }))).toBe('Fund buying: ValueAct opened a new position · as of Mar 31');
+  });
+
+  it('uses the increased verb when that is what fired', () => {
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'Third Point',
+      hedge_fund_action: 'increased',
       hedge_fund_latest_period: '2026-06-30',
-    } as BuyAlertRow;
-    expect(hedgeFundBadge(row)).toBe('ValueAct · Q2 2026');
+    }))).toBe('Fund buying: Third Point increased its stake · as of Jun 30');
   });
 
-  it('passes a comma-joined multi-fund match through as-is', () => {
-    const row = {
-      hedge_fund_names: 'ValueAct, Appaloosa',
+  it('joins two funds with "and", and drops the verb', () => {
+    // Real case: UBER matches Appaloosa (new) and Pershing Square (increased),
+    // so the view returns action=null. Even if both had done the same thing,
+    // "Appaloosa and Pershing Square increased its stake" doesn't parse.
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'Appaloosa, Pershing Square',
+      hedge_fund_action: null,
       hedge_fund_latest_period: '2026-06-30',
-    } as BuyAlertRow;
-    expect(hedgeFundBadge(row)).toBe('ValueAct, Appaloosa · Q2 2026');
+    }))).toBe('Fund buying: Appaloosa and Pershing Square · as of Jun 30');
   });
 
-  it('maps every quarter-end month to the right quarter', () => {
-    const badge = (period: string) =>
-      hedgeFundBadge({hedge_fund_names: 'X', hedge_fund_latest_period: period} as BuyAlertRow);
-    expect(badge('2026-03-31')).toBe('X · Q1 2026');
-    expect(badge('2026-06-30')).toBe('X · Q2 2026');
-    expect(badge('2026-09-30')).toBe('X · Q3 2026');
-    expect(badge('2025-12-31')).toBe('X · Q4 2025');
+  it('drops the verb for multiple funds even when they agree', () => {
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'Baupost, ValueAct',
+      hedge_fund_action: 'new',
+      hedge_fund_latest_period: '2026-06-30',
+    }))).toBe('Fund buying: Baupost and ValueAct · as of Jun 30');
+  });
+
+  it('serialises three or more funds readably', () => {
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'Appaloosa, Baupost, ValueAct',
+      hedge_fund_latest_period: '2026-06-30',
+    }))).toBe('Fund buying: Appaloosa, Baupost and ValueAct · as of Jun 30');
+  });
+
+  it('omits the verb when the action is missing or unrecognised', () => {
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'Baupost',
+      hedge_fund_action: null,
+      hedge_fund_latest_period: '2026-06-30',
+    }))).toBe('Fund buying: Baupost · as of Jun 30');
+    expect(fundBuyingLine(row({
+      hedge_fund_short_names: 'Baupost',
+      hedge_fund_action: 'reduced',
+      hedge_fund_latest_period: '2026-06-30',
+    }))).toBe('Fund buying: Baupost · as of Jun 30');
+  });
+
+  it('falls back to the legal name without splitting it on commas', () => {
+    // A migration and a deploy don't land at the same instant, so a cached
+    // response may carry only the old column. Degrade rather than drop the
+    // line -- but legal names contain commas ("ValueAct Holdings, L.P."), so
+    // the fallback must not split or it renders two funds that don't exist.
+    expect(fundBuyingLine(row({
+      hedge_fund_names: 'ValueAct Holdings, L.P.',
+      hedge_fund_action: 'new',
+      hedge_fund_latest_period: '2026-03-31',
+    }))).toBe('Fund buying: ValueAct Holdings, L.P. · as of Mar 31');
+  });
+
+  it('renders every quarter-end as an "as of" date, not a quarter label', () => {
+    // "as of Jun 30" says snapshot; "Q2 2026" assumes the reader knows what a
+    // 13F is and that it lags.
+    const at = (period: string) =>
+      fundBuyingLine(row({hedge_fund_short_names: 'X', hedge_fund_latest_period: period}));
+    expect(at('2026-03-31')).toBe('Fund buying: X · as of Mar 31');
+    expect(at('2026-06-30')).toBe('Fund buying: X · as of Jun 30');
+    expect(at('2026-09-30')).toBe('Fund buying: X · as of Sep 30');
+    expect(at('2025-12-31')).toBe('Fund buying: X · as of Dec 31');
   });
 
   it('works identically on a CongressAlertRow (shared formatter)', () => {
-    const row = {
-      hedge_fund_names: 'Baupost',
-      hedge_fund_latest_period: '2026-06-30',
-    } as CongressAlertRow;
-    expect(hedgeFundBadge(row)).toBe('Baupost · Q2 2026');
+    expect(fundBuyingLine({
+      hedge_fund_names: null,
+      hedge_fund_short_names: 'Appaloosa',
+      hedge_fund_action: 'increased',
+      hedge_fund_latest_period: '2026-03-31',
+    } as unknown as CongressAlertRow)).toBe(
+      'Fund buying: Appaloosa increased its stake · as of Mar 31',
+    );
   });
 });
 
@@ -222,11 +288,21 @@ describe('groupConvergenceAlerts', () => {
   });
 
   it('carries the hedge-fund overlap fields through to the card', () => {
+    // The fund line belongs on a convergence card too: a third independent
+    // party buying the headline signal's stock is the most valuable place it
+    // can appear, not the place to economise on it.
     const cards = groupConvergenceAlerts([
-      row({hedge_fund_names: 'ValueAct', hedge_fund_latest_period: '2026-06-30'}),
+      row({
+        hedge_fund_names: 'ValueAct Holdings, L.P.',
+        hedge_fund_short_names: 'ValueAct',
+        hedge_fund_action: 'new',
+        hedge_fund_latest_period: '2026-06-30',
+      }),
     ]);
-    expect(cards[0].hedge_fund_names).toBe('ValueAct');
-    expect(hedgeFundBadge(cards[0])).toBe('ValueAct · Q2 2026');
+    expect(cards[0].hedge_fund_short_names).toBe('ValueAct');
+    expect(fundBuyingLine(cards[0])).toBe(
+      'Fund buying: ValueAct opened a new position · as of Jun 30',
+    );
   });
 
   it('groups multiple Congressional buyers on the same ticker into one card', () => {

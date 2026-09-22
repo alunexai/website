@@ -20,6 +20,12 @@ export type BuyAlertRow = {
   // when more than one fund matches.
   hedge_fund_names: string | null;
   hedge_fund_latest_period: string | null; // quarter-end date, e.g. "2026-06-30"
+  // Short display name ("ValueAct", not "ValueAct Holdings, L.P.") and which
+  // condition fired. hedge_fund_action is null when the matching funds
+  // disagree -- one opened a position while another increased -- because no
+  // single verb is true of both.
+  hedge_fund_short_names: string | null;
+  hedge_fund_action: string | null; // "new" | "increased" | null
 };
 
 /// Abbreviate a USD amount: 1234 -> "$1.2K", 7.28e10 -> "$72.8B". One decimal,
@@ -95,6 +101,8 @@ export type CongressAlertRow = {
   pe_ratio: number | null;
   hedge_fund_names: string | null;
   hedge_fund_latest_period: string | null;
+  hedge_fund_short_names: string | null;
+  hedge_fund_action: string | null;
 };
 
 /// "Boozman, John (Senator)" -> "Sen. John Boozman". Falls back to the raw
@@ -120,24 +128,77 @@ export function congressPeDisplay(row: Pick<CongressAlertRow, 'pe_ratio'>): stri
   return formatPe(row.pe_ratio);
 }
 
-// "2026-06-30" -> "Q2 2026". 13F periods are always quarter-end dates (03-31,
-// 06-30, 09-30, 12-31), so the month alone determines the quarter.
-function quarterLabel(periodOfReport: string): string {
-  const [year, month] = periodOfReport.split('-');
-  const quarter = Math.ceil(Number(month) / 3);
-  return `Q${quarter} ${year}`;
+// "2026-03-31" -> "Mar 31". 13F reports a position as of quarter-end, so the
+// row says "as of <date>" rather than a transaction date -- the whole point is
+// that this is a snapshot, not a dated trade like a Form 4 or a PTR.
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function asOfLabel(periodOfReport: string): string {
+  const [, month, day] = periodOfReport.split('-');
+  return `${MONTHS[Number(month) - 1]} ${Number(day)}`;
 }
 
-// Shared by BuyAlertRow, CongressAlertRow, and ConvergenceCard -- all three
-// carry the same two hedge-fund fields (DESIGN §3.9). Returns '' (not a
-// placeholder like "—") when there's no match, since the caller should omit
-// the badge entirely rather than render an empty one -- absence here is
-// uninformative, never a bearish signal, so it shouldn't visually read as one.
-export function hedgeFundBadge(
-  row: {hedge_fund_names: string | null; hedge_fund_latest_period: string | null},
+/// "Appaloosa, Pershing Square" -> "Appaloosa and Pershing Square".
+/// The view comma-joins; English doesn't.
+function fundNamesLabel(funds: string[]): string {
+  if (funds.length === 1) return funds[0];
+  return `${funds.slice(0, -1).join(', ')} and ${funds[funds.length - 1]}`;
+}
+
+/// The supporting-signal line: "Fund buying: ValueAct opened a new position ·
+/// as of Mar 31".
+///
+/// Leads with the CATEGORY, not the fund. A reader who has never heard of
+/// ValueAct still learns that a fund bought this stock, and "Fund buying"
+/// echoes the page's own "Insider Buying" / "Congressional buying" headings, so
+/// it needs no new vocabulary. The previous version rendered the fund's legal
+/// name alone, directly under the ticker, where a reader expects "what is this
+/// company" -- so "WIX / ValueAct Holdings, L.P." read as a parent or
+/// subsidiary rather than a different investor. It also had no verb, while
+/// every other line on the page has one.
+///
+/// Returns '' when there's no match so the caller omits the line entirely.
+/// Absence is uninformative -- most tickers have no tracked-fund match -- and
+/// an empty placeholder would make it read as a negative.
+export function fundBuyingLine(
+  row: {
+    hedge_fund_names: string | null;
+    hedge_fund_short_names: string | null;
+    hedge_fund_action: string | null;
+    hedge_fund_latest_period: string | null;
+  },
 ): string {
-  if (!row.hedge_fund_names || !row.hedge_fund_latest_period) return '';
-  return `${row.hedge_fund_names} · ${quarterLabel(row.hedge_fund_latest_period)}`;
+  if (!row.hedge_fund_latest_period) return '';
+  const asOf = asOfLabel(row.hedge_fund_latest_period);
+
+  // Fall back to the legal name if short names aren't present. The two are
+  // populated together by the view, but a migration and a deploy don't land at
+  // the same instant -- a served-from-cache response during that window should
+  // degrade rather than drop the line.
+  //
+  // The fallback does NOT split on commas or add a verb. Legal names contain
+  // them ("ValueAct Holdings, L.P."), so splitting would render "ValueAct
+  // Holdings and L.P." as two funds. Short names never do, which is exactly
+  // why the view comma-joins them.
+  if (!row.hedge_fund_short_names) {
+    return row.hedge_fund_names
+      ? `Fund buying: ${row.hedge_fund_names} · as of ${asOf}`
+      : '';
+  }
+
+  const funds = row.hedge_fund_short_names.split(',').map(f => f.trim()).filter(Boolean);
+  if (!funds.length) return '';
+
+  // Only attach a verb for a single fund. With two, the action is usually null
+  // anyway (the view suppresses it when funds disagree), but even when both
+  // funds did the same thing "Appaloosa and Pershing Square increased its
+  // stake" doesn't parse -- so multi-fund just names them.
+  let verb = '';
+  if (funds.length === 1) {
+    if (row.hedge_fund_action === 'new') verb = ' opened a new position';
+    else if (row.hedge_fund_action === 'increased') verb = ' increased its stake';
+  }
+
+  return `Fund buying: ${fundNamesLabel(funds)}${verb} · as of ${asOf}`;
 }
 
 // Mirrors insider-trading-app's convergence_alerts_v1 view (DESIGN §3.8e): a
@@ -153,6 +214,8 @@ export type ConvergenceAlertRow = {
   corporate_latest_buy: string;
   hedge_fund_names: string | null;
   hedge_fund_latest_period: string | null;
+  hedge_fund_short_names: string | null;
+  hedge_fund_action: string | null;
   member_name: string;
   state: string | null;
   party: string | null;
@@ -170,6 +233,8 @@ export type ConvergenceCard = {
   corporate_latest_buy: string;
   hedge_fund_names: string | null;
   hedge_fund_latest_period: string | null;
+  hedge_fund_short_names: string | null;
+  hedge_fund_action: string | null;
   members: Array<{
     member_name: string;
     state: string | null;
@@ -196,6 +261,8 @@ export function groupConvergenceAlerts(rows: ConvergenceAlertRow[]): Convergence
         corporate_latest_buy: r.corporate_latest_buy,
         hedge_fund_names: r.hedge_fund_names,
         hedge_fund_latest_period: r.hedge_fund_latest_period,
+        hedge_fund_short_names: r.hedge_fund_short_names,
+        hedge_fund_action: r.hedge_fund_action,
         members: [],
       };
       byTicker.set(r.ticker, card);
